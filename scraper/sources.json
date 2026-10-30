@@ -5,40 +5,40 @@
       "store": "Pick n Pay",
       "strategy": "json",
       "method": "POST",
-      "url": "https://www.pnp.co.za/pnphybris/v2/pnp-spa/products/search?fields=FULL&query=%3Arelevance%3AallCategories%3Apnpbase%3AisOnPromotion%3AOn%20Promotion&pageSize=72&currentPage={page0}&lang=en&curr=ZAR",
+      "url": "https://www.pnp.co.za/pnphybris/v2/pnp-spa/products/search?fields=products%28code%2Cname%2Curl%2Cprice%28FULL%29%2Cimages%28DEFAULT%29%2CpotentialPromotions%28FULL%29%29%2Cpagination%28DEFAULT%29&query=%3Arelevance%3AallCategories%3Apnpbase%3AisOnPromotion%3AOn%20Promotion&pageSize=72&currentPage={page0}&storeCode={store}&lang=en&curr=ZAR",
+      "store_default": "WC21",
       "store_param_env": "PNP_STORE_CODE",
-      "store_param": "&storeCode={value}",
       "json_body": {},
-      "pages": 10,
+      "pages": 20,
       "page_size": 72,
-      "base_url": "https://www.pnp.co.za/p/",
-      "url_confidence": "medium",
+      "base_url": "https://www.pnp.co.za/",
+      "url_confidence": "verified 2026-10-30",
       "apify_actor": "zaiq~pick-n-pay-scraper",
       "apify_input": {
         "searchTerms": [
-          "specials",
-          "promotion"
+          "specials"
         ],
         "maxItemsPerSource": 300
       }
     },
     {
       "store": "Woolworths",
-      "strategy": "html",
-      "url": "https://www.woolworths.co.za/cat/Food/_/N-1z13sk4Z1z0vjfo?No={offset}&Nrpp=60",
-      "pages": 6,
-      "page_size": 60,
-      "base_url": "https://www.woolworths.co.za",
-      "url_confidence": "low"
+      "strategy": "woolworths",
+      "url": "https://www.woolworths.co.za/browse/food-south-africa/promotions-specials?page={page}",
+      "pages": 40,
+      "page_size": 24,
+      "base_url": "https://www.woolworths.co.za/",
+      "url_confidence": "verified 2026-10-30"
     },
     {
       "store": "Clicks",
-      "strategy": "html",
-      "url": "https://clicks.co.za/specials?page={page0}",
-      "pages": 6,
-      "page_size": 48,
-      "base_url": "https://clicks.co.za",
-      "url_confidence": "low"
+      "strategy": "json",
+      "method": "GET",
+      "url": "https://clicks.co.za/products/c/OH1/results?q=%3Arelevance%3ApromoStickerplp%3A1%3ApromoStickerplp%3A2%3ApromoStickerplp%3A3%3ApromoStickerplp%3A4%3ApromoStickerplp%3A5%3ApromoStickerplp%3A6%3ApromoStickerplp%3A7%3ApromoStickerplp%3A10&page={page0}&count=80",
+      "pages": 15,
+      "page_size": 80,
+      "base_url": "https://clicks.co.za/",
+      "url_confidence": "verified 2026-10-30"
     }
   ],
   "restaurants": [
@@ -62,21 +62,6 @@
         "brackenfell special"
       ],
       "max_posts": 150,
-      "since_days": 150
-    },
-    {
-      "source": "Cape Town ETC",
-      "strategy": "wordpress",
-      "base": "https://www.capetownetc.com",
-      "tag_search": [
-        "northern suburbs"
-      ],
-      "search": [
-        "northern suburbs specials",
-        "durbanville specials",
-        "bellville specials"
-      ],
-      "max_posts": 60,
       "since_days": 150
     }
   ],
@@ -144,12 +129,6 @@
     {
       "name": "Meerendal",
       "url": "https://meerendal.co.za",
-      "suburb": "Durbanville",
-      "category": "Wine"
-    },
-    {
-      "name": "Altydgedacht",
-      "url": "https://altydgedacht.co.za",
       "suburb": "Durbanville",
       "category": "Wine"
     },

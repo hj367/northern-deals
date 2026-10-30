@@ -190,3 +190,49 @@ def test_shopify_and_woo_parsers():
                      "prices": {"price": "18900", "regular_price": "21900", "currency_minor_unit": 2},
                      "images": [{"src": "https://shop/i.jpg"}], "categories": [{"name": "Meat"}]}, "Deli")
     assert (w.name, w.price, w.was_price, w.on_promo) == ("Biltong & Droewors Pack", 189.0, 219.0, True)
+
+
+import json
+from pathlib import Path
+
+FIX = Path(__file__).parent / "fixtures"
+
+
+def test_real_pnp_shape():
+    ps = products_from_json(json.loads((FIX / "pnp.json").read_text()), "Pick n Pay", "https://www.pnp.co.za/")
+    milk, other = ps
+    assert (milk.price, milk.was_price, milk.barcode) == (97.99, 99.99, "6001007164294")
+    assert milk.url.startswith("https://www.pnp.co.za/All-Products/")
+    assert other.valid_until == "2026-11-01" and effective_price(other) == (35.0, "when you buy 2")
+
+
+def test_real_woolworths_shape():
+    from deals.sources.retail import woolworths_products
+    ps = woolworths_products((FIX / "woolworths.html").read_text(), "Woolworths", "https://www.woolworths.co.za/")
+    by = {p.store_sku: p for p in ps}
+    shampoo, chicken = by["621732600223"], by["6009171091446"]
+    assert shampoo.price == 229.99 and shampoo.was_price is None and shampoo.barcode == "621732600223"
+    assert effective_price(shampoo) == (183.99, "when you buy 3")
+    assert chicken.was_price == 126.99 and chicken.on_promo
+    assert shampoo.url == "https://www.woolworths.co.za/prod/Food/Promotions/Buy-2-Or-More-And-Save/Buy-any-3-save-20-/Toiletries/Marc-Anthony-Strengthening-Grow-Long-Shampoo-250-ml/_/A-621732600223"
+
+
+def test_real_clicks_shape():
+    ps = products_from_json(json.loads((FIX / "clicks.json").read_text()), "Clicks", "https://clicks.co.za/")
+    powder, spray = ps
+    assert powder.price == 249.95 and powder.image == "https://clicks.co.za/medias/?context=abc"
+    assert powder.valid_until == "2026-12-24"
+    assert effective_price(powder) == (166.63, "when you buy 3")   # 3rd free
+    assert effective_price(spray) == (43.0, "when you buy 2")       # "2for 86"
+
+
+def test_wine_brand_is_not_a_location():
+    p = _post("6 Oysters &amp; Durbanville Hills Sparkling Wine Special at Quay Four for R189",
+              "<p>Enjoy Durbanville Hills Sparkling Wine. Directions to Quay Four<br>V&amp;A Waterfront<br>Cape Town</p>", "2026-10-01")
+    assert special_from_post(p, "FoodBlogCT", SUBURBS, tagged_northern=True) is None
+
+
+def test_event_without_special_headline_skipped():
+    p = _post("Wine, Music and Karaoke at Durbanville Hills this November",
+              "<p>Tickets R150. Directions to Durbanville Hills<br>Tygerberg Valley Road<br>Durbanville</p>", "2026-10-29")
+    assert special_from_post(p, "FoodBlogCT", SUBURBS, tagged_northern=True) is None

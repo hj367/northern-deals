@@ -115,6 +115,8 @@ def product_from_dict(d: dict, store: str, base_url: str = "") -> Optional[Produ
     name = _text(_first(d, NAME_KEYS))
     price = _money(_first(d, PRICE_KEYS)) or _money(_first(offers, PRICE_KEYS))
     was = _money(_first(d, WAS_KEYS)) or _money(_first(offers, WAS_KEYS))
+    if not was and isinstance(d.get("price"), dict):  # Hybris (Pick n Pay): price.oldPrice
+        was = _money(_first(d["price"], WAS_KEYS + ("oldPrice",)))
     if was and price and was <= price:
         was = None
     member = _money(_first(d, MEMBER_KEYS))
@@ -130,6 +132,15 @@ def product_from_dict(d: dict, store: str, base_url: str = "") -> Optional[Produ
     if promo and len(promo) > 160:
         promo = promo[:157] + "..."
     valid = _first(d, VALID_KEYS) or offers.get("priceValidUntil")
+    promos = d.get("potentialPromotions")
+    if not valid and isinstance(promos, list) and promos and isinstance(promos[0], dict):
+        valid = promos[0].get("endDate")
+    if not valid and promo:
+        valid = _valid_from_text(promo)
+    barcode = _text(_first(d, BARCODE_KEYS))
+    if not barcode and image:  # Pick n Pay image names carry the EAN
+        m = re.search(r"-(\d{13})-", image)
+        barcode = m.group(1) if m else None
 
     return ProductObs(
         store=store,
@@ -139,7 +150,7 @@ def product_from_dict(d: dict, store: str, base_url: str = "") -> Optional[Produ
         was_price=was,
         promo_text=promo,
         member_price=member if member and member < (price or 1e9) else None,
-        barcode=_text(_first(d, BARCODE_KEYS)),
+        barcode=barcode,
         brand=_text(brand),
         size_text=_text(_first(d, SIZE_KEYS)) if not isinstance(_first(d, SIZE_KEYS), (int, float)) else None,
         url=url if isinstance(url, str) else None,
@@ -260,3 +271,16 @@ def products_from_html(html: str, store: str, base_url: str) -> list[ProductObs]
                 seen.add(p.key)
                 out.append(p)
     return out
+
+
+_MONTHS = {m: i for i, m in enumerate(
+    ["january", "february", "march", "april", "may", "june", "july", "august",
+     "september", "october", "november", "december"], 1)}
+
+
+def _valid_from_text(text: str) -> Optional[str]:
+    """'... Valid until 24 December 2026' -> '2026-12-24'."""
+    m = re.search(r"(?:valid until|ends?|until)\s+(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})", text, re.I)
+    if not m or m.group(2).lower() not in _MONTHS:
+        return None
+    return f"{int(m.group(3)):04d}-{_MONTHS[m.group(2).lower()]:02d}-{int(m.group(1)):02d}"

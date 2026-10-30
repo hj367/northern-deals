@@ -26,6 +26,8 @@ NOT_A_SPECIAL = re.compile(
     r"restaurants? in cape town|where to)\b",
     re.I,
 )
+# Place names that are also brands (wines sold everywhere) — not evidence of location.
+BRAND_PHRASES = re.compile(r"Durbanville Hills(?=\s+(?:Sparkling|Wines?|Sauvignon|Merlot|Chardonnay|Pinotage|Shiraz|Cabernet|Ros|MCC|Achieves|wine))", re.I)
 SPECIAL_WORDS = re.compile(
     r"\b(special|for only|only R|\d+% off|half[- ]price|two[- ]for[- ]one|2[- ]for[- ]1|bottomless|"
     r"happy hour|free|R\s?\d{2,4})\b",
@@ -45,7 +47,10 @@ def scrape_wordpress(cfg: dict, http: Http, suburbs: list[str], today: Optional[
         for term in cfg.get("tag_search", []):
             for t in http.get_json(f"{base}/wp-json/wp/v2/tags", params={"search": term, "per_page": 100}):
                 tag_ids.add(t["id"])
-                if any(s.lower() in t.get("name", "").lower() for s in suburbs) or "northern" in t.get("name", "").lower():
+                tname = t.get("name", "").lower()
+                if "durbanville hills" in tname and "restaurant" not in tname:
+                    continue  # the wine brand's tag, not the place
+                if any(s.lower() in tname for s in suburbs) or "northern" in tname:
                     suburb_tag_ids.add(t["id"])
         fields = "id,date,modified,link,title,content,excerpt,tags,jetpack_featured_media_url"
         ids = sorted(tag_ids)
@@ -116,14 +121,21 @@ def special_from_post(p: dict, source: str, suburbs: list[str], tagged_northern:
     content_html = p.get("content", {}).get("rendered", "") or ""
     soup = BeautifulSoup(content_html, "html.parser")
     text = soup.get_text("\n", strip=True)
-    if NOT_A_SPECIAL.search(title) or not SPECIAL_WORDS.search(f"{title}\n{text[:1500]}"):
+    # The headline itself has to be a special: a price, % off, 2-for-1, "special", happy hour...
+    if NOT_A_SPECIAL.search(title) or not SPECIAL_WORDS.search(title):
         return None
 
-    # Where is it? Trust the title, the address block, or a suburb tag — not a passing mention.
-    address = _address(text)
-    suburb = find_suburb(title, suburbs) or find_suburb(address or "", suburbs)
+    # Where is it? Trust the address block, a suburb tag, or "in <suburb>" in the title —
+    # not a passing mention (and not a wine brand named after a suburb).
+    clean_title = BRAND_PHRASES.sub("", title)
+    clean_text = BRAND_PHRASES.sub("", text)
+    address = _address(clean_text)
+    suburb = find_suburb(address or "", suburbs)
+    if not suburb:
+        m = re.search(r"\b(?:in|,)\s+((?:[A-Z][a-z]+\s?){1,2})", clean_title)
+        suburb = find_suburb(m.group(1), suburbs) if m else None
     if not suburb and tagged_northern:
-        suburb = find_suburb(text, suburbs)
+        suburb = find_suburb(clean_title, suburbs) or find_suburb(clean_text, suburbs)
     if not suburb:
         return None
 

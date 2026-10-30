@@ -1,8 +1,11 @@
 """Config-driven retail scrapers (see sources.json)."""
 from __future__ import annotations
 
+import json
 import logging
 import os
+import re
+from urllib.parse import urljoin
 from dataclasses import dataclass, field
 
 from ..extract import products_from_html, products_from_json
@@ -35,11 +38,9 @@ class SourceResult:
 
 
 def _page_url(cfg: dict, page0: int) -> str:
-    url = cfg["url"].format(page=page0 + 1, page0=page0, offset=page0 * cfg.get("page_size", 0))
     env = cfg.get("store_param_env")
-    if env and os.environ.get(env):
-        url += cfg.get("store_param", "").format(value=os.environ[env])
-    return url
+    store = (os.environ.get(env) if env else None) or cfg.get("store_default", "")
+    return cfg["url"].format(page=page0 + 1, page0=page0, offset=page0 * cfg.get("page_size", 0), store=store)
 
 
 def scrape_retail(cfg: dict, http: Http) -> SourceResult:
@@ -56,6 +57,8 @@ def scrape_retail(cfg: dict, http: Http) -> SourceResult:
                 else:
                     data = http.get_json(url, headers={"Accept": "application/json"})
                 found = products_from_json(data, store, cfg.get("base_url", ""))
+            elif cfg["strategy"] == "woolworths":
+                found = woolworths_products(http.get_text(url), store, cfg.get("base_url", ""))
             else:
                 html = http.get_text(url)
                 found = products_from_html(html, store, cfg.get("base_url", ""))
@@ -85,6 +88,58 @@ def scrape_retail(cfg: dict, http: Http) -> SourceResult:
             res.error += f" | Apify fallback failed: {e}"
     res.items = [p for p in res.items if p.price and p.name]
     return res
+
+
+_WW_STATE = re.compile(r"window\.__INITIAL_STATE__\s*=\s*({.*?})\s*;?\s*</script>", re.S)
+
+
+def woolworths_products(html: str, store: str, base_url: str) -> list[ProductObs]:
+    """Woolworths embeds listing data in __INITIAL_STATE__: p10 = price, p10_wp = was price, id = barcode."""
+    m = _WW_STATE.search(html)
+    if not m:
+        return []
+    state = json.loads(m.group(1))
+    out, seen = [], set()
+
+    def walk(o, depth=0):
+        if depth > 30:
+            return
+        if isinstance(o, dict):
+            if "p10" in o and "description" in o and "id" in o:
+                p = _ww_product(o, store, base_url)
+                if p and p.key not in seen:
+                    seen.add(p.key)
+                    out.append(p)
+                return
+            for v in o.values():
+                walk(v, depth + 1)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v, depth + 1)
+
+    walk(state)
+    return out
+
+
+def _ww_product(d: dict, store: str, base_url: str):
+    price = d.get("p10")
+    if not isinstance(price, (int, float)) or price <= 0:
+        return None
+    was = d.get("p10_wp")
+    promo = "; ".join(d.get("promo") or []) or None
+    pid = str(d["id"])
+    return ProductObs(
+        store=store,
+        store_sku=pid,
+        name=d.get("description", ""),
+        price=round(float(price), 2),
+        was_price=round(float(was), 2) if isinstance(was, (int, float)) and was > price else None,
+        promo_text=promo,
+        barcode=pid if pid.isdigit() and len(pid) in (8, 12, 13) else None,
+        brand=d.get("brand") if d.get("brand") not in ("Woolies Brands", "Other Brands") else None,
+        url=urljoin(base_url, d.get("url", "")) if d.get("url") else None,
+        image=d.get("image_url"),
+    )
 
 
 def scrape_apify(cfg: dict, http: Http) -> list[ProductObs]:

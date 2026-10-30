@@ -22,7 +22,11 @@ from .models import ProductObs, RestaurantSpecial
 MIN_HISTORY_DAYS = 14        # need this much history before judging "was" prices
 MIN_DAYS_AT_WAS = 7          # a real "was" price was charged for at least a week
 
-_MULTI_RE = re.compile(r"\b(?:buy|any)\s*(\d+)\s*(?:for|at)\s*R\s?(\d+(?:[.,]\d{1,2})?)", re.I)
+_MULTI_RE = re.compile(r"\b(?:(?:buy|any)\s*)?(\d+)\s*(?:for|at)\s*(?:R\s?(\d+(?:[.,]\d{1,2})?)|(\d{2,5}(?:[.,]\d{1,2})?)\b)", re.I)
+_CHEAPEST_FREE_RE = re.compile(r"\b(?:buy\s*)?(?:any\s*)?(\d)\b.{0,60}?cheapest\s*(?:1|one)?\s*free", re.I)
+_SAVE_PCT_RE = re.compile(r"\b(?:buy|any)\s*(?:any\s*)?(\d+)\s*(?:and\s*)?(?:or more\s*(?:and\s*)?)?save\s*(\d{1,2})\s*%", re.I)
+_SECOND_RE = re.compile(r"(\d{1,3})\s*%\s*off\s*(?:the\s*)?2nd|2nd\s*(?:one\s*)?(?:at\s*)?half[- ]price|(\d{1,3})%\s*off.{0,20}second", re.I)
+_X_FOR_Y_RE = re.compile(r"\b([2-5])\s*for\s*([1-4])\b", re.I)
 _SAVE_RE = re.compile(r"\bsave\s*R\s?(\d+(?:[.,]\d{1,2})?)", re.I)
 
 
@@ -32,9 +36,29 @@ def effective_price(p: ProductObs) -> tuple[float, Optional[str]]:
     if p.promo_text:
         m = _MULTI_RE.search(p.promo_text)
         if m:
-            n, total = int(m.group(1)), float(m.group(2).replace(",", "."))
+            n, total = int(m.group(1)), float((m.group(2) or m.group(3)).replace(",", "."))
             if n > 1 and total / n < best:
                 best, how = round(total / n, 2), f"when you buy {n}"
+        m = _CHEAPEST_FREE_RE.search(p.promo_text)
+        if m and int(m.group(1)) > 1:
+            n = int(m.group(1))
+            eff = round(p.price * (n - 1) / n, 2)
+            if eff < best:
+                best, how = eff, f"when you buy {n}"
+        m = _SAVE_PCT_RE.search(p.promo_text)
+        if m and p.price * (1 - int(m.group(2)) / 100) < best:
+            best, how = round(p.price * (1 - int(m.group(2)) / 100), 2), f"when you buy {m.group(1)}"
+        m = _SECOND_RE.search(p.promo_text)
+        if m:
+            pct = int(m.group(1) or m.group(2) or 50)
+            eff = round(p.price * (1 - pct / 200), 2)
+            if eff < best:
+                best, how = eff, "when you buy 2"
+        m = _X_FOR_Y_RE.search(p.promo_text)
+        if m and int(m.group(2)) < int(m.group(1)):
+            eff = round(p.price * int(m.group(2)) / int(m.group(1)), 2)
+            if eff < best:
+                best, how = eff, f"when you buy {m.group(1)}"
     if p.member_price and p.member_price < best:
         best, how = p.member_price, "with the store's loyalty card"
     return best, how
