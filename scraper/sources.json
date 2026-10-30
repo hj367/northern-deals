@@ -1,0 +1,83 @@
+{
+  "_comment": "Edit URLs here if a store changes its site; no code change needed. {page} is 1-based, {page0} is 0-based, {offset} = page0 * page_size. Sources marked url_confidence=low were written without live access and may need the URL updated after the first run (check sources.json in the data repo / the Sources screen in the app).",
+  "retail": [
+    {
+      "store": "Pick n Pay",
+      "strategy": "json",
+      "method": "POST",
+      "url": "https://www.pnp.co.za/pnphybris/v2/pnp-spa/products/search?fields=FULL&query=%3Arelevance%3AallCategories%3Apnpbase%3AisOnPromotion%3AOn%20Promotion&pageSize=72&currentPage={page0}&lang=en&curr=ZAR",
+      "store_param_env": "PNP_STORE_CODE",
+      "store_param": "&storeCode={value}",
+      "json_body": {},
+      "pages": 10,
+      "page_size": 72,
+      "base_url": "https://www.pnp.co.za/p/",
+      "url_confidence": "medium",
+      "apify_actor": "zaiq~pick-n-pay-scraper",
+      "apify_input": {"searchTerms": ["specials", "promotion"], "maxItemsPerSource": 300}
+    },
+    {
+      "store": "Checkers",
+      "strategy": "html",
+      "url": "https://www.checkers.co.za/c-2256/All-Departments?q=%3Arelevance%3AbrowseAllStoresFacetOff%3AbrowseAllStoresFacetOff%3AallCategories%3Aspecials&page={page0}",
+      "pages": 10,
+      "page_size": 20,
+      "base_url": "https://www.checkers.co.za",
+      "url_confidence": "medium",
+      "apify_actor": "zaiq~checkers-scraper",
+      "apify_input": {"searchTerms": ["specials"], "maxItemsPerSource": 300}
+    },
+    {
+      "store": "Woolworths",
+      "strategy": "html",
+      "url": "https://www.woolworths.co.za/cat/Food/_/N-1z13sk4Z1z0vjfo?No={offset}&Nrpp=60",
+      "pages": 6,
+      "page_size": 60,
+      "base_url": "https://www.woolworths.co.za",
+      "url_confidence": "low"
+    },
+    {
+      "store": "Dis-Chem",
+      "strategy": "html",
+      "url": "https://www.dischem.co.za/promotions?p={page}",
+      "pages": 6,
+      "page_size": 36,
+      "base_url": "https://www.dischem.co.za",
+      "url_confidence": "low"
+    },
+    {
+      "store": "Clicks",
+      "strategy": "html",
+      "url": "https://clicks.co.za/specials?page={page0}",
+      "pages": 6,
+      "page_size": 48,
+      "base_url": "https://clicks.co.za",
+      "url_confidence": "low"
+    }
+  ],
+  "restaurants": [
+    {
+      "source": "FoodBlogCT",
+      "strategy": "wordpress",
+      "base": "https://www.food-blog.co.za",
+      "tag_search": ["durbanville", "bellville", "northern suburbs", "brackenfell", "kraaifontein", "parow", "tygervalley"],
+      "search": ["durbanville special", "bellville special", "tyger valley special", "brackenfell special"],
+      "max_posts": 150
+    },
+    {
+      "source": "Cape Town ETC",
+      "strategy": "wordpress",
+      "base": "https://www.capetownetc.com",
+      "tag_search": ["northern suburbs"],
+      "search": ["northern suburbs specials", "durbanville specials", "bellville specials"],
+      "max_posts": 60
+    }
+  ],
+  "suburbs": [
+    "Bellville", "Durbanville", "Brackenfell", "Kraaifontein", "Kuils River", "Parow", "Goodwood",
+    "Edgemead", "Bothasig", "Plattekloof", "Panorama", "Monte Vista", "Welgemoed", "Tyger Valley",
+    "Tygervalley", "Tyger Waterfront", "Kenridge", "Sonstraal", "Protea Heights", "Burgundy Estate",
+    "Okavango", "Eversdal", "Boston", "Oakdale", "Loevenstein", "Vredekloof", "Sunningdale", "Willowbridge",
+    "Canal Walk", "Century City", "Milnerton", "Blue Downs", "Elsies River", "Belhar", "Fisantekraal"
+  ]
+}

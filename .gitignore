@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+data/
+app/android/
+app/build/
+app/.dart_tool/
+app/.flutter-plugins*
+app/pubspec.lock
