@@ -18,17 +18,26 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    env:
-      DATA_REPO: ${{ vars.DATA_REPO || 'hj367/northern-deals-data' }}
+    permissions:
+      contents: write          # lets the built-in token push to the data branch
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check out data repo (prices history + published deals.json)
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.DATA_REPO }}
-          token: ${{ secrets.DATA_REPO_TOKEN }}
-          path: data
+      # Deals + price history live on the "data" branch of this repo.
+      # The app reads https://raw.githubusercontent.com/<repo>/data/deals.json
+      - name: Check out data branch
+        env:
+          REMOTE: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        run: |
+          mkdir data && cd data
+          git init -q
+          git remote add origin "$REMOTE"
+          if git fetch -q --depth 1 origin data; then
+            git checkout -q -b data FETCH_HEAD
+          else
+            echo "No data branch yet, starting one"
+            git checkout -q --orphan data
+          fi
 
       - uses: actions/setup-python@v5
         with:
@@ -56,5 +65,5 @@ jobs:
           git config user.email "deals-bot@users.noreply.github.com"
           git add deals.json history.json
           git diff --cached --quiet && echo "No changes" && exit 0
-          git commit -m "Deals $(date -u +%F)"
-          git push
+          git commit -q -m "Deals $(date -u +%F)"
+          git push origin data

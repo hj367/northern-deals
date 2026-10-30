@@ -42,7 +42,7 @@ jobs:
       - run: flutter analyze --no-fatal-infos
       - run: flutter test
       - name: Build release APK
-        run: flutter build apk --release --dart-define=DEALS_URL=${{ vars.DEALS_URL || 'https://raw.githubusercontent.com/hj367/northern-deals-data/main/deals.json' }}
+        run: flutter build apk --release --dart-define=DEALS_URL=${{ vars.DEALS_URL || 'https://raw.githubusercontent.com/hj367/northern-deals/data/deals.json' }}
 
       - uses: actions/upload-artifact@v4
         with:

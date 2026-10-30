@@ -30,24 +30,18 @@ scraper/               Python: scrape → record history → verify → deals.js
   tests/               offline tests (pytest)
 app/                   Flutter app (lib/ + pubspec; Android project is generated in CI)
 .github/workflows/
-  scrape.yml           daily 06:17 SAST scan, publishes to the data repo
+  scrape.yml           daily 06:17 SAST scan, publishes to the `data` branch
   build-apk.yml        builds the APK on every push to app/
 ```
 
-## Setup (one-off, ~10 minutes)
+## Setup
 
-1. **App repo (private):** create `hj367/northern-deals` on GitHub and push this folder:
-   ```bash
-   cd northern-deals
-   git remote add origin https://github.com/hj367/northern-deals.git
-   git push -u origin main
-   ```
-2. **Data repo (public):** create `hj367/northern-deals-data` as a **public** repo, ticking *Add a README* (the workflow can't check out an empty repo).
-   It only holds prices and specials — public so the app can read it without a key baked into the APK.
-3. **Token:** GitHub → Settings → Developer settings → Fine-grained tokens → new token with access to *only* `northern-deals-data`, permission **Contents: Read and write**.
-   In the app repo: Settings → Secrets and variables → Actions → New secret `DATA_REPO_TOKEN` = that token.
-4. **Run the first scan:** Actions → *Scrape deals* → Run workflow. Check the log's `SOURCE` lines — each store reports ok / item count / error.
-5. **Get the APK:** Actions → *Build APK* → latest run → artifact `northern-deals-apk`.
+The repo is public. Deals and price history are saved to the **`data` branch** of this same repo by the scan workflow, using GitHub's built-in token — no extra secrets needed.
+
+1. **Run the first scan:** Actions → *Scrape deals* → Run workflow. Check the log's `SOURCE` lines — each store reports ok / item count / error.
+2. **Get the APK:** Actions → *Build APK* → latest run → artifact `northern-deals-apk`.
+
+The app reads `https://raw.githubusercontent.com/hj367/northern-deals/data/deals.json`.
 
 ### Optional settings (app repo → Settings → Secrets and variables → Actions)
 
@@ -55,7 +49,6 @@ app/                   Flutter app (lib/ + pubspec; Android project is generated
 |---|---|---|
 | `APIFY_TOKEN` | secret | If Pick n Pay or Checkers block GitHub's servers, falls back to a hosted scraper that uses SA connections (Apify, ~$5 per 1,000 products). |
 | `PNP_STORE_CODE` | variable | Price Pick n Pay at a specific branch instead of the online default. |
-| `DATA_REPO` | variable | Use a different data repo name. |
 | `DEALS_URL` | variable | Feed URL compiled into the APK (also changeable in the app under Sources & settings). |
 
 ## When a store shows an error
@@ -73,7 +66,7 @@ Woolworths, Dis-Chem and Clicks URLs are marked `url_confidence: low` — they w
 cd scraper
 pip install -r requirements.txt
 python -m pytest -q
-python -m deals.run --data ../data --only "Checkers,FoodBlogCT"
+python -m deals.run --data ../data   # writes deals.json + history.json locally --only "Checkers,FoodBlogCT"
 ```
 
 ## Notes

@@ -8,7 +8,7 @@ import 'models.dart';
 /// Set at build time: --dart-define=DEALS_URL=...  (can be overridden in Settings).
 const defaultDealsUrl = String.fromEnvironment(
   'DEALS_URL',
-  defaultValue: 'https://raw.githubusercontent.com/hj367/northern-deals-data/main/deals.json',
+  defaultValue: 'https://raw.githubusercontent.com/hj367/northern-deals/data/deals.json',
 );
 
 class DealsApi {
