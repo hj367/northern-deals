@@ -163,7 +163,12 @@ def verify_special(s: RestaurantSpecial, rec: dict, corroborating_sources: int, 
     last = max(filter(None, [s.modified, s.published])) if (s.modified or s.published) else None
     age = (date.fromisoformat(today) - date.fromisoformat(last)).days if last else None
 
-    if age is None:
+    if s.own_site:
+        verdict = "verified"
+        reasons.append(_r(True, f"On {s.restaurant}'s own website today"))
+        if s.poster and last:
+            reasons.append(_r(None, f"From their specials poster, uploaded {_ago(age)}"))
+    elif age is None:
         verdict = "unverified"
         reasons.append(_r(None, "No publish date — check with the restaurant"))
     elif age <= 45:

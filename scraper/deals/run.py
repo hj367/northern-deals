@@ -18,6 +18,8 @@ from .http import Http
 from .match import group_same_products
 from .models import ProductObs, RestaurantSpecial, norm_text
 from .sources.retail import SourceResult, scrape_retail
+from .geo import Geo
+from .sources.restaurant_site import scrape_restaurant_site
 from .sources.shops import scrape_shop
 from .sources.wordpress import scrape_wordpress
 from .verify import verify_product, verify_special
@@ -28,7 +30,7 @@ SA = ZoneInfo("Africa/Johannesburg")
 
 
 def build_output(products: list[ProductObs], specials: list[RestaurantSpecial], hist: History,
-                 health: list[dict], today: str) -> dict:
+                 health: list[dict], today: str, branches: dict | None = None) -> dict:
     # --- record today's prices first, then judge against the days before today
     for p in products:
         hist.record(p, today)
@@ -87,6 +89,7 @@ def build_output(products: list[ProductObs], specials: list[RestaurantSpecial], 
             "products_tracked": len(hist.products),
         },
         "sources": health,
+        "branches": branches or {},
         "grocery": grocery,
         "restaurants": rest_out,
     }
@@ -128,9 +131,33 @@ def main(argv: list[str] | None = None) -> int:
         r = scrape_wordpress(wc, http, cfg["suburbs"], today)
         results.append(r)
         specials += r.items
+    for rs in cfg.get("restaurant_sites", []):
+        if only and rs["name"].lower() not in only:
+            continue
+        r = scrape_restaurant_site(rs, http)
+        results.append(r)
+        specials += r.items
+
+    # --- locations (OpenStreetMap; cached in history.json)
+    geo = Geo(hist.geo, today)
+    shop_cfg = {c["name"]: c for c in cfg.get("shops", [])}
+    shop_ll: dict[str, list | None] = {}
+    for p in products:
+        if p.local:
+            if p.store not in shop_ll:
+                c = shop_cfg.get(p.store, {})
+                shop_ll[p.store] = geo.locate(c.get("address"), c.get("suburb"), p.store)
+            if shop_ll[p.store]:
+                p.lat, p.lng = shop_ll[p.store]
+    for s in specials:
+        ll = geo.locate(s.address, s.suburb, s.restaurant)
+        if ll:
+            s.lat, s.lng = ll
+    branches = geo.chain_branches()
+    log.info("geocoded with %d new lookups; branches: %s", geo.lookups, {k: len(v) for k, v in branches.items()})
 
     health = [r.health() for r in results]
-    out = build_output(products, specials, hist, health, today)
+    out = build_output(products, specials, hist, health, today, branches)
 
     data_dir.mkdir(parents=True, exist_ok=True)
     hist.save(data_dir / "history.json")

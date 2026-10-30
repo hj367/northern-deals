@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../location.dart';
 import '../models.dart';
+import '../share.dart';
 import '../widgets/common.dart';
 
 const _weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 class RestaurantTab extends StatefulWidget {
   final List<RestaurantSpecial> specials;
+  final Here? here;
+  final double radiusKm;
   final Future<void> Function() onRefresh;
-  const RestaurantTab({super.key, required this.specials, required this.onRefresh});
+  const RestaurantTab({super.key, required this.specials, required this.onRefresh, this.here, this.radiusKm = 10});
+
+  double? distOf(RestaurantSpecial s) =>
+      here == null || s.lat == null || s.lng == null ? null : distanceKm(here!.lat, here!.lng, s.lat!, s.lng!);
 
   @override
   State<RestaurantTab> createState() => _RestaurantTabState();
@@ -27,8 +34,13 @@ class _RestaurantTabState extends State<RestaurantTab> {
       if (_hideOutdated && s.verdict == 'outdated') return false;
       if (_suburb != null && s.suburb != _suburb) return false;
       if (_today && !(s.days.isEmpty || s.days.contains('Daily') || s.days.contains(todayName))) return false;
+      final km = widget.distOf(s);
+      if (km != null && km > widget.radiusKm) return false;
       return true;
     }).toList();
+    if (widget.here != null) {
+      list.sort((a, b) => (widget.distOf(a) ?? 1e9).compareTo(widget.distOf(b) ?? 1e9));
+    }
 
     return RefreshIndicator(
       onRefresh: widget.onRefresh,
@@ -71,7 +83,7 @@ class _RestaurantTabState extends State<RestaurantTab> {
             child: Center(child: Padding(padding: EdgeInsets.all(32), child: Text('No specials match these filters.'))),
           )
         else
-          SliverList.builder(itemCount: list.length, itemBuilder: (_, i) => _SpecialCard(list[i])),
+          SliverList.builder(itemCount: list.length, itemBuilder: (_, i) => _SpecialCard(list[i], widget.distOf(list[i]))),
         const SliverToBoxAdapter(child: SizedBox(height: 24)),
       ]),
     );
@@ -82,7 +94,8 @@ class _RestaurantTabState extends State<RestaurantTab> {
 
 class _SpecialCard extends StatelessWidget {
   final RestaurantSpecial s;
-  const _SpecialCard(this.s);
+  final double? km;
+  const _SpecialCard(this.s, this.km);
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +120,7 @@ class _SpecialCard extends StatelessWidget {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(s.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: t.titleSmall),
                 const SizedBox(height: 2),
-                Text([s.restaurant, s.suburb].whereType<String>().join(' · '),
+                Text([s.restaurant, s.suburb, if (km != null) kmLabel(km!)].whereType<String>().join(' · '),
                     style: t.bodySmall?.copyWith(color: muted)),
                 const SizedBox(height: 6),
                 Wrap(spacing: 8, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
@@ -118,6 +131,11 @@ class _SpecialCard extends StatelessWidget {
                   VerdictChip(s.verdict, dense: true),
                 ]),
               ]),
+            ),
+            IconButton(
+              tooltip: 'Share',
+              icon: const Icon(Icons.share_outlined, size: 20),
+              onPressed: () => shareSpecial(s),
             ),
           ]),
         ),
@@ -154,14 +172,22 @@ class _SpecialDetail extends StatelessWidget {
           ReasonList(s.reasons),
           const SizedBox(height: 16),
           FilledButton.icon(
-            onPressed: () => openUrl(context, s.url),
-            icon: const Icon(Icons.open_in_new),
-            label: Text('Read on ${s.source}'),
+            onPressed: () => shareSpecial(s),
+            icon: const Icon(Icons.share_outlined),
+            label: const Text('Share (WhatsApp, Facebook…)'),
+          ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            onPressed: () => openUrl(context, s.poster ?? s.url),
+            icon: Icon(s.poster != null ? Icons.image_outlined : Icons.open_in_new),
+            label: Text(s.poster != null ? 'See their specials poster' : 'Read on ${s.source}'),
           ),
           const SizedBox(height: 8),
           OutlinedButton.icon(
             onPressed: () => openUrl(context,
-                'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent([s.restaurant, s.suburb, 'Cape Town'].whereType<String>().join(' '))}'),
+                s.lat != null
+                    ? 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent([s.restaurant, s.address ?? s.suburb].whereType<String>().join(', '))}'
+                    : 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent([s.restaurant, s.suburb, 'Cape Town'].whereType<String>().join(' '))}'),
             icon: const Icon(Icons.map_outlined),
             label: const Text('Find on map'),
           ),

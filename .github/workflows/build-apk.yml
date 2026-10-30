@@ -33,7 +33,8 @@ jobs:
             flutter create --platforms=android --org za.hj --project-name northern_deals .
           fi
           # Internet permission for release builds
-          sed -i 's|<application|<uses-permission android:name="android.permission.INTERNET"/>\n    <application|' android/app/src/main/AndroidManifest.xml
+          sed -i 's|<application|<uses-permission android:name="android.permission.INTERNET"/>\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>\n    <application|' android/app/src/main/AndroidManifest.xml
+          grep -c "ACCESS_FINE_LOCATION" android/app/src/main/AndroidManifest.xml
           sed -i 's|android:label="[^"]*"|android:label="Northern Deals"|' android/app/src/main/AndroidManifest.xml
           # url_launcher needs to see browser apps on Android 11+
           sed -i 's|</queries>|  <intent><action android:name="android.intent.action.VIEW"/><data android:scheme="https"/></intent>\n    </queries>|' android/app/src/main/AndroidManifest.xml

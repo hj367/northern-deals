@@ -27,6 +27,8 @@ class ProductObs:
     valid_until: Optional[str] = None   # ISO date if the store says when the promo ends
     local: Optional[bool] = None        # True for small local businesses
     suburb: Optional[str] = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None
 
     @property
     def on_promo(self) -> bool:
@@ -62,6 +64,10 @@ class RestaurantSpecial:
     summary: Optional[str] = None
     image: Optional[str] = None
     address: Optional[str] = None
+    own_site: Optional[bool] = None     # published on the restaurant's own website
+    poster: Optional[str] = None        # poster image the special was read from
+    lat: Optional[float] = None
+    lng: Optional[float] = None
 
     @property
     def key(self) -> str:

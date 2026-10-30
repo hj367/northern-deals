@@ -15,6 +15,7 @@ class History:
         data = data or {}
         self.products: dict[str, dict] = data.get("products", {})
         self.restaurants: dict[str, dict] = data.get("restaurants", {})
+        self.geo: dict = data.get("geo", {})
 
     # ---------- io ----------
     @classmethod
@@ -26,7 +27,7 @@ class History:
     def save(self, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(
-            {"version": 1, "products": self.products, "restaurants": self.restaurants},
+            {"version": 1, "products": self.products, "restaurants": self.restaurants, "geo": self.geo},
             separators=(",", ":"), ensure_ascii=False,
         ))
 

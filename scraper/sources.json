@@ -1,5 +1,5 @@
 {
-  "_comment": "Edit URLs here if a store changes its site; no code change needed. {page} is 1-based, {page0} is 0-based, {offset} = page0 * page_size. Sources marked url_confidence=low were written without live access and may need the URL updated after the first run (check sources.json in the data repo / the Sources screen in the app). Shops: add any local business with an online shop to 'shops' (name, url, suburb, category); Shopify/WooCommerce are detected automatically.",
+  "_comment": "Edit URLs here if a store changes its site; no code change needed. {page} is 1-based, {page0} is 0-based, {offset} = page0 * page_size. Sources marked url_confidence=low were written without live access and may need the URL updated after the first run (check sources.json in the data repo / the Sources screen in the app). Shops: add any local business with an online shop to 'shops' (name, url, suburb, category); Shopify/WooCommerce are detected automatically. restaurant_sites: a restaurant's own site; weekly specials are read from page text or a specials poster image (OCR).",
   "retail": [
     {
       "store": "Pick n Pay",
@@ -106,19 +106,30 @@
       "name": "Diemersdal",
       "url": "https://diemersdal.co.za",
       "suburb": "Durbanville",
-      "category": "Wine"
+      "category": "Wine",
+      "address": "Diemersdal Wine Estate, Durbanville"
     },
     {
       "name": "De Grendel",
       "url": "https://degrendel.co.za",
       "suburb": "Durbanville",
-      "category": "Wine"
+      "category": "Wine",
+      "address": "De Grendel Wines, Plattekloof Road, Durbanville"
     },
     {
       "name": "42 on Sonneblom Deli",
       "url": "https://shop.42onsonneblom.co.za",
       "suburb": "Bellville",
       "category": "Deli"
+    }
+  ],
+  "restaurant_sites": [
+    {
+      "name": "Corner Deck",
+      "url": "https://cornerdeck.co.za",
+      "suburb": "Brackenfell",
+      "address": "Cape Gate Lifestyle Centre, Okavango Road, Brackenfell",
+      "poster_search": "special"
     }
   ]
 }

@@ -16,6 +16,7 @@ class GroceryDeal {
   final double? wasPrice, memberPrice, usualPrice;
   final String? promoText, url, image, condition, validUntil, size, suburb, category;
   final bool local;
+  final double? lat, lng;
   final int score, historyDays;
   final int? claimedPct;
   final Map<String, dynamic>? cheapestElsewhere;
@@ -41,6 +42,8 @@ class GroceryDeal {
         suburb = j['suburb'],
         category = j['category'],
         local = j['local'] == true,
+        lat = _d(j['lat']),
+        lng = _d(j['lng']),
         score = (j['score'] as num?)?.toInt() ?? 0,
         historyDays = (j['history_days'] as num?)?.toInt() ?? 0,
         claimedPct = (j['claimed_discount_pct'] as num?)?.toInt(),
@@ -66,6 +69,9 @@ class RestaurantSpecial {
   final List<String> days, sources;
   final int? ageDays;
   final List<Reason> reasons;
+  final double? lat, lng;
+  final bool ownSite;
+  final String? poster;
 
   RestaurantSpecial.fromJson(Map<String, dynamic> j)
       : key = j['key'] ?? '',
@@ -83,7 +89,11 @@ class RestaurantSpecial {
         days = List<String>.from(j['days'] ?? const []),
         sources = List<String>.from(j['sources'] ?? const []),
         ageDays = (j['age_days'] as num?)?.toInt(),
-        reasons = _reasons(j['reasons']);
+        reasons = _reasons(j['reasons']),
+        lat = _d(j['lat']),
+        lng = _d(j['lng']),
+        ownSite = j['own_site'] == true,
+        poster = j['poster'];
 }
 
 class SourceHealth {
@@ -105,8 +115,10 @@ class DealsData {
   final List<SourceHealth> sources;
   final int productsTracked;
   final bool fromCache;
+  final Map<String, List<Branch>> branches;
 
   DealsData({
+    this.branches = const {},
     required this.generatedAt,
     required this.grocery,
     required this.restaurants,
@@ -127,6 +139,19 @@ class DealsData {
             .map((e) => SourceHealth.fromJson(e as Map<String, dynamic>))
             .toList(),
         productsTracked: (j['counts']?['products_tracked'] as num?)?.toInt() ?? 0,
+        branches: {
+          for (final e in ((j['branches'] as Map?) ?? const {}).entries)
+            e.key as String: [
+              for (final b in (e.value as List))
+                Branch((b[0] as num).toDouble(), (b[1] as num).toDouble(), b.length > 2 ? '${b[2]}' : e.key as String)
+            ]
+        },
         fromCache: fromCache,
       );
+}
+
+class Branch {
+  final double lat, lng;
+  final String name;
+  const Branch(this.lat, this.lng, this.name);
 }

@@ -243,3 +243,26 @@ def test_refill_and_variant_not_matched():
     b = ProductObs("Pick n Pay", "2", "Jacobs Kronung Instant Coffee 200g", 209.99)
     c = ProductObs("Clicks", "3", "Jacobs Kronung Gold Mild Instant Coffee 200g", 199.99)
     assert group_same_products([a, b, c]) == []
+
+
+def test_corner_deck_poster_ocr():
+    from deals.ocr import ocr_lines, parse_weekly_specials
+    specials, footer = parse_weekly_specials(ocr_lines((FIX / "cornerdeck_specials.jpg").read_bytes()))
+    got = {(s["day"], s["text"], s["price"]) for s in specials}
+    assert ("Monday", "200g Sirloin or Rump + Side R115", 115.0) in got
+    assert ("Tuesday", "Burger + side R85", 85.0) in got
+    assert ("Wednesday", "R30 Off Selected Pizzas", None) in got
+    assert ("Thursday", "400g Ribs + Any Side R145", 145.0) in got
+    assert ("Sunday", "1kg Eisbein & Mash R165", 165.0) in got
+    assert ("Sunday", "Kids Eat Free All Day", None) in got
+    assert "4 pm" in footer
+
+
+def test_own_site_special_is_verified():
+    from deals.models import RestaurantSpecial
+    from deals.verify import verify_special
+    s = RestaurantSpecial(title="Burger + side R85", restaurant="Corner Deck", suburb="Brackenfell", price=85,
+                          days=["Tuesday"], source="Corner Deck website", url="https://cornerdeck.co.za",
+                          published="2025-08-27", modified="2025-08-27", own_site=True, poster="x.jpg")
+    v = verify_special(s, {}, 1, "2026-10-30")
+    assert v["verdict"] == "verified" and "own website today" in v["reasons"][0]["text"]
