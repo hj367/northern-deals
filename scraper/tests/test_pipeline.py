@@ -236,3 +236,10 @@ def test_event_without_special_headline_skipped():
     p = _post("Wine, Music and Karaoke at Durbanville Hills this November",
               "<p>Tickets R150. Directions to Durbanville Hills<br>Tygerberg Valley Road<br>Durbanville</p>", "2026-10-29")
     assert special_from_post(p, "FoodBlogCT", SUBURBS, tagged_northern=True) is None
+
+
+def test_refill_and_variant_not_matched():
+    a = ProductObs("Woolworths", "1", "Jacobs Kronung Instant Coffee Refill Pack 200 g", 174.99)
+    b = ProductObs("Pick n Pay", "2", "Jacobs Kronung Instant Coffee 200g", 209.99)
+    c = ProductObs("Clicks", "3", "Jacobs Kronung Gold Mild Instant Coffee 200g", 199.99)
+    assert group_same_products([a, b, c]) == []

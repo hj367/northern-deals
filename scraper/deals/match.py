@@ -70,7 +70,8 @@ def group_same_products(items: list[ProductObs], threshold: int = 88) -> list[li
             for tj, pj in members[i + 1:]:
                 if id(pj) in used or pj.store == pi.store or any(x.store == pj.store for x in group):
                     continue
-                if fuzz.token_set_ratio(ti, tj) >= threshold and _brand_ok(ti, tj):
+                if (fuzz.token_set_ratio(ti, tj) >= threshold and fuzz.token_sort_ratio(ti, tj) >= 80
+                        and _brand_ok(ti, tj) and _variant_ok(ti, tj)):
                     group.append(pj)
                     used.add(id(pj))
             if len(group) > 1:
@@ -82,6 +83,15 @@ def group_same_products(items: list[ProductObs], threshold: int = 88) -> list[li
                 else:
                     groups.append(group)
     return [g for g in groups if len({p.store for p in g}) > 1]
+
+
+VARIANT_WORDS = {"refill", "refills", "pouch", "jar", "tin", "sachet", "sachets", "gold", "mild", "decaf",
+                 "light", "lite", "zero", "sugar", "free", "kids", "baby", "mini", "max", "extra", "original"}
+
+
+def _variant_ok(a: str, b: str) -> bool:
+    """'Coffee Refill Pack' is not 'Coffee' in a jar; 'Gold Mild' is not the regular one."""
+    return (set(a.split()) & VARIANT_WORDS) == (set(b.split()) & VARIANT_WORDS)
 
 
 def _brand_ok(a: str, b: str) -> bool:

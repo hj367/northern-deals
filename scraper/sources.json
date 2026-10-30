@@ -115,41 +115,10 @@
       "category": "Wine"
     },
     {
-      "name": "Nitida",
-      "url": "https://nitida.co.za",
-      "suburb": "Durbanville",
-      "category": "Wine"
-    },
-    {
-      "name": "Durbanville Hills",
-      "url": "https://durbanvillehills.co.za",
-      "suburb": "Durbanville",
-      "category": "Wine"
-    },
-    {
-      "name": "Meerendal",
-      "url": "https://meerendal.co.za",
-      "suburb": "Durbanville",
-      "category": "Wine"
-    },
-    {
-      "name": "Stodels",
-      "url": "https://www.stodels.com",
-      "suburb": "Bellville",
-      "category": "Garden & pets"
-    },
-    {
       "name": "42 on Sonneblom Deli",
       "url": "https://shop.42onsonneblom.co.za",
       "suburb": "Bellville",
       "category": "Deli"
-    },
-    {
-      "name": "Son of a Butcher",
-      "url": "https://take.app/sonofabutcher",
-      "platform": "html",
-      "suburb": "Durbanville",
-      "category": "Butchery"
     }
   ]
 }
