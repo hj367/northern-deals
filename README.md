@@ -39,7 +39,6 @@ app/                   Flutter app (lib/ + pubspec; Android project is generated
 1. **App repo (private):** create `hj367/northern-deals` on GitHub and push this folder:
    ```bash
    cd northern-deals
-   git add -A && git commit -m "Northern Deals v1"
    git remote add origin https://github.com/hj367/northern-deals.git
    git push -u origin main
    ```
