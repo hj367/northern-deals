@@ -15,6 +15,7 @@ class GroceryTab extends StatefulWidget {
 class _GroceryTabState extends State<GroceryTab> {
   String _show = 'verified'; // verified | all | fake
   final Set<String> _stores = {};
+  bool _localOnly = false;
   String _q = '';
 
   @override
@@ -23,6 +24,7 @@ class _GroceryTabState extends State<GroceryTab> {
     final list = widget.deals.where((d) {
       if (_show == 'verified' && !(d.verdict == 'real' || d.verdict == 'good')) return false;
       if (_show == 'fake' && !(d.verdict == 'fake' || d.verdict == 'weak')) return false;
+      if (_localOnly && !d.local) return false;
       if (_stores.isNotEmpty && !_stores.contains(d.store)) return false;
       if (_q.isNotEmpty && !d.name.toLowerCase().contains(_q)) return false;
       return true;
@@ -36,7 +38,7 @@ class _GroceryTabState extends State<GroceryTab> {
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Search coffee, nappies, chicken…',
+                hintText: 'Search wine, coffee, biltong…',
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: BorderSide.none),
@@ -67,16 +69,25 @@ class _GroceryTabState extends State<GroceryTab> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              children: stores
-                  .map((s) => Padding(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: FilterChip(
+                    avatar: const Icon(Icons.storefront_outlined, size: 18),
+                    label: const Text('Local businesses'),
+                    selected: _localOnly,
+                    onSelected: (v) => setState(() => _localOnly = v),
+                  ),
+                ),
+                ...stores.map((s) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: FilterChip(
                           label: Text(s),
                           selected: _stores.contains(s),
                           onSelected: (v) => setState(() => v ? _stores.add(s) : _stores.remove(s)),
                         ),
-                      ))
-                  .toList(),
+                      )),
+              ],
             ),
           ),
         ),
@@ -127,7 +138,8 @@ class _DealCard extends StatelessWidget {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(d.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: t.titleSmall),
                 const SizedBox(height: 2),
-                Text(d.store, style: t.bodySmall?.copyWith(color: Theme.of(context).colorScheme.outline)),
+                Text([d.store, if (d.local && d.suburb != null) d.suburb].join(' · '),
+                    style: t.bodySmall?.copyWith(color: Theme.of(context).colorScheme.outline)),
                 const SizedBox(height: 6),
                 Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, runSpacing: 4, children: [
                   Text(rand(d.effectivePrice), style: t.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
@@ -212,7 +224,8 @@ class GroceryDetail extends StatelessWidget {
             label: Text('View at ${d.store}'),
           ),
           const SizedBox(height: 8),
-          Text('Online prices; in-store prices at your branch can differ.', style: t.bodySmall, textAlign: TextAlign.center),
+          if (!d.local)
+            Text('Online prices; in-store prices at your branch can differ.', style: t.bodySmall, textAlign: TextAlign.center),
         ],
       ),
     );

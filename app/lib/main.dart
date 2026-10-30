@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
           bottom: TabBar(tabs: [
-            Tab(text: 'Groceries & retail${d == null ? '' : ' (${d.grocery.where((g) => g.verdict == 'real' || g.verdict == 'good').length})'}'),
+            Tab(text: 'Shops${d == null ? '' : ' (${d.grocery.where((g) => g.verdict == 'real' || g.verdict == 'good').length})'}'),
             Tab(text: 'Restaurants${d == null ? '' : ' (${d.restaurants.where((r) => r.verdict != 'outdated').length})'}'),
           ]),
         ),

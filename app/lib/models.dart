@@ -14,7 +14,8 @@ class GroceryDeal {
   final String key, store, name, verdict;
   final double price, effectivePrice;
   final double? wasPrice, memberPrice, usualPrice;
-  final String? promoText, url, image, condition, validUntil, size;
+  final String? promoText, url, image, condition, validUntil, size, suburb, category;
+  final bool local;
   final int score, historyDays;
   final int? claimedPct;
   final Map<String, dynamic>? cheapestElsewhere;
@@ -37,6 +38,9 @@ class GroceryDeal {
         condition = j['condition'],
         validUntil = j['valid_until'],
         size = j['size_text'],
+        suburb = j['suburb'],
+        category = j['category'],
+        local = j['local'] == true,
         score = (j['score'] as num?)?.toInt() ?? 0,
         historyDays = (j['history_days'] as num?)?.toInt() ?? 0,
         claimedPct = (j['claimed_discount_pct'] as num?)?.toInt(),

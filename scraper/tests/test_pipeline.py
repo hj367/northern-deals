@@ -152,7 +152,7 @@ def test_end_to_end_build():
     specials = [
         special_from_post(_post("Half-price burgers at Jackson and Black every Tuesday",
                                 "<p>Tyger Waterfront, Bellville. R95 burgers on Tuesdays.</p>",
-                                "2026-10-20"), "FoodBlogCT", SUBURBS + ["Tyger Waterfront"]),
+                                "2026-10-20"), "FoodBlogCT", SUBURBS + ["Tyger Waterfront"], tagged_northern=True),
         special_from_post(_post("Fish &amp; Chips for only R55 at Hooked",
                                 "<p>Directions to Hooked<br>Tygervalley Shopping Centre<br>Bellville</p>",
                                 "2017-12-11"), "FoodBlogCT", SUBURBS),
@@ -166,3 +166,27 @@ def test_end_to_end_build():
     assert r["Jackson and Black"]["verdict"] == "verified" and r["Jackson and Black"]["days"] == ["Tuesday"]
     assert r["Hooked"]["verdict"] == "outdated"
     assert out["grocery"][0]["store"] == "Checkers"
+
+
+def test_event_and_roundup_posts_skipped():
+    for t in ("Join an Interactive Cooking Class at Durbanville Hills", "Christmas Lunch & Dinners in Cape Town 2026"):
+        assert special_from_post(_post(t, "<p>Durbanville. R495 per person.</p>", "2026-10-20"),
+                                 "FoodBlogCT", SUBURBS, tagged_northern=True) is None
+
+
+def test_passing_mention_is_not_northern():
+    # Mentions Durbanville in the body, but the restaurant is elsewhere and the post isn't tagged northern
+    post = _post("Pizza Night for Two R250 at Noah", "<p>Like our Durbanville friends... Directions to Noah<br>Sea Point</p>", "2026-10-29")
+    assert special_from_post(post, "FoodBlogCT", SUBURBS) is None
+
+
+def test_shopify_and_woo_parsers():
+    from deals.sources.shops import shopify_product, woo_product
+    s = shopify_product({"id": 7, "title": "Sauvignon Blanc 2025", "handle": "sauv-blanc", "vendor": "Diemersdal",
+                         "variants": [{"price": "95.00", "compare_at_price": "120.00", "title": "Default Title"}],
+                         "images": [{"src": "https://cdn/x.jpg"}]}, "Diemersdal", "https://diemersdal.co.za")
+    assert (s.price, s.was_price, s.url) == (95.0, 120.0, "https://diemersdal.co.za/products/sauv-blanc")
+    w = woo_product({"id": 9, "name": "Biltong &amp; Droewors Pack", "permalink": "https://shop/p/9",
+                     "prices": {"price": "18900", "regular_price": "21900", "currency_minor_unit": 2},
+                     "images": [{"src": "https://shop/i.jpg"}], "categories": [{"name": "Meat"}]}, "Deli")
+    assert (w.name, w.price, w.was_price, w.on_promo) == ("Biltong & Droewors Pack", 189.0, 219.0, True)

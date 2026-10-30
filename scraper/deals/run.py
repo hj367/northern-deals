@@ -18,6 +18,7 @@ from .http import Http
 from .match import group_same_products
 from .models import ProductObs, RestaurantSpecial, norm_text
 from .sources.retail import SourceResult, scrape_retail
+from .sources.shops import scrape_shop
 from .sources.wordpress import scrape_wordpress
 from .verify import verify_product, verify_special
 
@@ -115,10 +116,16 @@ def main(argv: list[str] | None = None) -> int:
         r = scrape_retail(rc, http)
         results.append(r)
         products += r.items
+    for sc in cfg.get("shops", []):
+        if only and sc["name"].lower() not in only:
+            continue
+        r = scrape_shop(sc, http)
+        results.append(r)
+        products += r.items
     for wc in cfg["restaurants"]:
         if only and wc["source"].lower() not in only:
             continue
-        r = scrape_wordpress(wc, http, cfg["suburbs"])
+        r = scrape_wordpress(wc, http, cfg["suburbs"], today)
         results.append(r)
         specials += r.items
 

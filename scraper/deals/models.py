@@ -25,6 +25,8 @@ class ProductObs:
     image: Optional[str] = None
     category: Optional[str] = None
     valid_until: Optional[str] = None   # ISO date if the store says when the promo ends
+    local: Optional[bool] = None        # True for small local businesses
+    suburb: Optional[str] = None
 
     @property
     def on_promo(self) -> bool:
