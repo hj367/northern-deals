@@ -1,0 +1,76 @@
+name: Discover local businesses
+
+on:
+  schedule:
+    - cron: "41 1 * * 0"     # Sundays 03:41 SAST, before the daily scan
+  workflow_dispatch:
+    inputs:
+      max_sites:
+        description: "How many business websites to check this run"
+        required: false
+        default: "200"
+  push:
+    branches: [main]
+    paths: ["scraper/businesses/*.csv"]   # new Google Maps kit export uploaded
+
+concurrency:
+  group: scrape                # never at the same time as the daily scan (both write the data branch)
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out data branch
+        env:
+          REMOTE: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        run: |
+          mkdir data && cd data
+          git init -q
+          git remote add origin "$REMOTE"
+          git fetch -q --depth 1 origin data
+          git checkout -q -b data FETCH_HEAD
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: scraper/requirements*.txt
+
+      - name: Install (incl. Crawl4AI + headless Chromium)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq libgl1 libglib2.0-0 >/dev/null || true
+          pip install -r scraper/requirements.txt -r scraper/requirements-discover.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Tests
+        working-directory: scraper
+        run: python -m pytest -q tests/test_discover.py
+
+      - name: Discover
+        working-directory: scraper
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}     # optional, free tier
+          MAX_SITES: ${{ github.event.inputs.max_sites || '200' }}
+        run: |
+          set +e; python -m deals.discover --data ../data 2>&1 | tee /tmp/discover.log
+          code=${PIPESTATUS[0]}
+          msg=$(grep -E "DISCOVERY|FOUND|candidate businesses|checking" /tmp/discover.log | head -60 | sed -e 's/%/%25/g' | sed -e ':a;N;$!ba;s/\n/%0A/g')
+          echo "::notice title=Discovery summary::$msg"
+          if [ $code -ne 0 ]; then echo "::error title=Discovery failed::$(tail -n 40 /tmp/discover.log | sed -e 's/%/%25/g' | sed -e ':a;N;$!ba;s/\n/%0A/g')"; fi
+          exit $code
+
+      - name: Publish
+        working-directory: data
+        run: |
+          git config user.name "deals-bot"
+          git config user.email "deals-bot@users.noreply.github.com"
+          git add discovered.json
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -q -m "Discovered businesses $(date -u +%F)"
+          git push origin data

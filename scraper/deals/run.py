@@ -95,6 +95,34 @@ def build_output(products: list[ProductObs], specials: list[RestaurantSpecial], 
     }
 
 
+def load_discovered(path: Path) -> dict:
+    """Specials and online shops found by the weekly discovery (deals.discover)."""
+    out = {"specials": [], "shops": []}
+    if not path.exists():
+        return out
+    try:
+        data = json.loads(path.read_text())
+    except Exception as e:
+        log.warning("discovered.json unreadable: %s", e)
+        return out
+    for key, b in data.get("businesses", {}).items():
+        name = b.get("name") or key
+        if b.get("shop_platform"):
+            out["shops"].append({"name": name, "url": b["website"], "platform": b["shop_platform"],
+                                 "suburb": b.get("suburb"), "category": (b.get("category") or "").title() or None,
+                                 **({"lat": b["lat"], "lng": b["lng"]} if b.get("lat") else {})})
+        for sp in b.get("specials") or []:
+            out["specials"].append(RestaurantSpecial(
+                title=sp["text"], restaurant=name, suburb=b.get("suburb"), price=sp.get("price"),
+                days=[sp["day"]] if sp.get("day") else [], source=f"{name} website",
+                url=sp.get("page") or b["website"], published=b.get("checked"), modified=b.get("checked"),
+                address=b.get("address"), own_site=True, poster=sp.get("poster"),
+                lat=b.get("lat"), lng=b.get("lng"),
+                summary=f"Found on their website · {b.get('category') or ''}".strip(" ·"),
+            ))
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", default=str(HERE.parent / "data"), help="folder with history.json; deals.json is written here")
@@ -107,6 +135,10 @@ def main(argv: list[str] | None = None) -> int:
     only = {s.strip().lower() for s in args.only.split(",") if s.strip()}
     data_dir = Path(args.data)
     hist = History.load(data_dir / "history.json")
+    discovered = load_discovered(data_dir / "discovered.json")
+    configured = {c["url"].split("//")[-1].removeprefix("www.").rstrip("/") for c in cfg.get("shops", [])}
+    cfg["shops"] = cfg.get("shops", []) + [c for c in discovered["shops"]
+                                          if c["url"].split("//")[-1].removeprefix("www.").rstrip("/") not in configured]
     today = datetime.now(SA).date().isoformat()
     http = Http()
 
@@ -131,6 +163,10 @@ def main(argv: list[str] | None = None) -> int:
         r = scrape_wordpress(wc, http, cfg["suburbs"], today)
         results.append(r)
         specials += r.items
+    if discovered["specials"] and (not only or "discovered" in only):
+        specials += discovered["specials"]
+        results.append(SourceResult(name="Local websites (weekly)", ok=True, items=discovered["specials"],
+                                    method="crawl4ai"))
     for rs in cfg.get("restaurant_sites", []):
         if only and rs["name"].lower() not in only:
             continue
@@ -152,6 +188,8 @@ def main(argv: list[str] | None = None) -> int:
                 p.lat, p.lng = shop_ll[p.store]
     site_cfg = {c["name"]: c for c in cfg.get("restaurant_sites", [])}
     for s in specials:
+        if s.lat is not None:
+            continue  # discovered businesses already carry their map location
         c = site_cfg.get(s.restaurant or "", {})
         ll = [c["lat"], c["lng"]] if "lat" in c else geo.locate(s.address, s.suburb, s.restaurant)
         if ll:

@@ -51,6 +51,16 @@ The app reads `https://raw.githubusercontent.com/hj367/northern-deals/data/deals
 | `PNP_STORE_CODE` | variable | Price Pick n Pay at a specific branch instead of the online default. |
 | `DEALS_URL` | variable | Feed URL compiled into the APK (also changeable in the app under Sources & settings). |
 
+## Local businesses (weekly discovery)
+
+Every Sunday the **Discover local businesses** workflow:
+1. lists northern-suburbs restaurants, cafés, pubs, butcheries, bakeries, delis, liquor stores, farm stalls etc. that have a website — from OpenStreetMap, plus any Google Maps kit CSVs in `scraper/businesses/` (see the README there);
+2. opens each website in a real headless browser (Crawl4AI), follows links to specials / promotions / menu pages and reads specials posters (OCR);
+3. reads the specials with free pattern rules — or Google's Gemini free tier if you add a `GEMINI_API_KEY` secret (free key at aistudio.google.com/apikey, no card);
+4. saves everything to `discovered.json` on the `data` branch. The daily scan shows these specials and adds any business with a Shopify/WooCommerce shop to the Shops tab.
+
+About 200 websites are checked per run and each is re-checked weekly. Run it by hand from Actions → *Discover local businesses* → Run workflow.
+
 ## When a store shows an error
 
 Store sites change and some block datacentre traffic. The scanner keeps going when one source fails, and the app's **Sources** screen (tune icon) shows which ones worked.
