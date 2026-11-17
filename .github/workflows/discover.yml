@@ -9,6 +9,10 @@ on:
         description: "How many business websites to check this run"
         required: false
         default: "200"
+      recheck_all:
+        description: "Re-check every business, even ones checked this week (1 = yes)"
+        required: false
+        default: "0"
   push:
     branches: [main]
     paths: ["scraper/businesses/*.csv"]   # new Google Maps kit export uploaded
@@ -57,6 +61,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}     # optional, free tier
           MAX_SITES: ${{ github.event.inputs.max_sites || '200' }}
+          RECHECK_ALL: ${{ github.event.inputs.recheck_all || '0' }}
         run: |
           set +e; python -m deals.discover --data ../data 2>&1 | tee /tmp/discover.log
           code=${PIPESTATUS[0]}
