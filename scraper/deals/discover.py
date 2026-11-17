@@ -25,7 +25,7 @@ from zoneinfo import ZoneInfo
 
 from . import llm
 from .crawl import Page, fetch_pages, same_site
-from .geo import BBOX, OVERPASS_ENDPOINTS, UA
+from .geo import OVERPASS_ENDPOINTS, UA
 from .http import Http
 from .ocr import ocr_lines, parse_weekly_specials
 
@@ -56,13 +56,13 @@ NOT_A_DEAL = re.compile(r"deliver|shipping|voucher|gift card|competition|terms|c
 
 # ---------------------------------------------------------------- business list
 def osm_businesses(http: Http) -> list[dict]:
-    s, w, n, e = BBOX
-    bb = f"({s},{w},{n},{e})"
-    q = f"""[out:json][timeout:180];
-(
- nwr["amenity"~"^({FOOD_AMENITY})$"][~"^(contact:)?website$"~"."]{bb};
- nwr["shop"~"^({FOOD_SHOP})$"][~"^(contact:)?website$"~"."]{bb};
-);
+    parts = []
+    for s, w, n, e in AREA:
+        bb = f"({s},{w},{n},{e})"
+        parts.append(f'nwr["amenity"~"^({FOOD_AMENITY})$"][~"^(contact:)?website$"~"."]{bb};')
+        parts.append(f'nwr["shop"~"^({FOOD_SHOP})$"][~"^(contact:)?website$"~"."]{bb};')
+    q = "[out:json][timeout:180];\n(\n" + "\n".join(parts) + "\n);"
+    q += """
 out center tags;"""
     data = None
     for ep in OVERPASS_ENDPOINTS:
@@ -154,39 +154,105 @@ def site_key(url: str) -> str:
     return host
 
 
+# Northern suburbs as two boxes (south, west, north, east): Milnerton/Century City/Edgemead strip,
+# and Goodwood–Parow–Bellville–Durbanville–Brackenfell–Kraaifontein–Kuils River. Excludes the City Bowl,
+# Observatory, Salt River, Pinelands and the southern suburbs.
+AREA = [(-33.915, 18.48, -33.76, 18.56), (-33.965, 18.56, -33.74, 18.80)]
+SUBURB_CENTRES = {
+    "Durbanville": (-33.832, 18.648), "Bellville": (-33.900, 18.630), "Tyger Valley": (-33.874, 18.634),
+    "Brackenfell": (-33.873, 18.693), "Kraaifontein": (-33.847, 18.718), "Kuils River": (-33.924, 18.685),
+    "Parow": (-33.900, 18.590), "Goodwood": (-33.909, 18.553), "Milnerton": (-33.875, 18.497),
+    "Century City": (-33.890, 18.512), "Edgemead": (-33.873, 18.545), "Bothasig": (-33.857, 18.540),
+    "Plattekloof": (-33.868, 18.583), "Panorama": (-33.879, 18.578), "Welgemoed": (-33.872, 18.618),
+    "Sonstraal": (-33.840, 18.672), "Protea Heights": (-33.851, 18.680), "Belhar": (-33.940, 18.626),
+    "Eversdal": (-33.855, 18.632), "Bloubergrant": (-33.805, 18.540), "Monte Vista": (-33.885, 18.553),
+    "Burgundy Estate": (-33.840, 18.552), "Fisantekraal": (-33.780, 18.725), "Blue Downs": (-33.995, 18.700),
+}
+CHAIN_DOMAINS = re.compile(
+    r"panarottis|spur\.co|oceanbasket|wimpy|debonairs|steers|nandos|kfc\.|mcdonalds|muggandbean|colcacchio|"
+    r"rocomamas|johndorys|fishaways|burgerking|romanspizza|pizzahut|dominos|starbucks|vidaecaffe|seattle|"
+    r"newscafe|cappello|primi|tashas|kauai|simplyasia|chickenlicken|hungrylion|galitos|famousbrands|"
+    r"ninosonline|europa|sausage-saloon|hussar|bossa|turn-n-tender|beefmaster|piatto", re.I)
+
+
 def in_area(b: dict) -> bool:
     if b.get("lat") is None or b.get("lng") is None:
-        return True  # kit rows without coordinates came from northern-suburbs searches
-    s, w, n, e = BBOX
-    return s <= b["lat"] <= n and w <= b["lng"] <= e
+        return b.get("found_via") == "Google Maps"  # kit rows came from northern-suburbs searches
+    return any(s <= b["lat"] <= n and w <= b["lng"] <= e for s, w, n, e in AREA)
+
+
+def nearest_suburb(lat: float, lng: float) -> Optional[str]:
+    import math
+    best, best_km = None, 99.0
+    for name, (y, x) in SUBURB_CENTRES.items():
+        km = math.hypot((lat - y) * 111, (lng - x) * 92)
+        if km < best_km:
+            best, best_km = name, km
+    return best if best_km <= 6 else None
 
 
 # ---------------------------------------------------------------- reading specials
+_DAY_NAMES = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+_DAY_HEAD = re.compile(r"^(" + "|".join(_DAY_NAMES) + r")s?\b[\s:–-]*(.*)$", re.I)
+_PRICE = re.compile(r"(?<![A-Za-z\d])R\s?(\d{2,4})(?:[.,]\d{2})?(?!\d|\s*[Oo][Ff][Ff])")
+_JUNK = re.compile(r"add to (?:cart|basket)|website by|designed by|copyright|©|all rights|@\w|https?://|www\.|"
+                   r"\bsku\b|out of stock|read more|view (?:menu|more)|sign up|log ?in|^\d+\.\s", re.I)
+EXTRA_NOT_DEAL = re.compile(r"only availab|subject to|rental|hire\b|per person deposit|tickets?\b|"
+                            r"\bcourse\b|class\b|workshop|function|wedding|year[- ]end", re.I)
+
+
+def _clean_md(ln: str) -> str:
+    ln = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", ln)            # images: drop
+    ln = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", ln)          # links: keep text
+    ln = re.sub(r"[*_`#>|]+", " ", ln)
+    return re.sub(r"\s+", " ", ln).strip(" -•·:")
+
+
+def _words(ln: str) -> int:
+    return len(re.findall(r"[A-Za-z]{2,}", ln))
+
+
 def rule_specials(text: str) -> list[dict]:
-    """Free pattern rules: weekly day-by-day lists, plus single lines that are clearly a deal."""
-    lines = [ln.strip(" #*-•|>").strip() for ln in text.splitlines()]
-    lines = [re.sub(r"!?\[([^\]]*)\]\([^)]*\)", r"\1", ln) for ln in lines if ln]   # markdown links -> text
-    weekly, _ = parse_weekly_specials(lines)
-    out = []
-    for s in weekly:
-        if NOT_A_DEAL.search(s["text"]):
+    """Free pattern rules. A line counts as a special when it reads like an offer:
+    - under a day heading (within 3 lines), with a price or offer words, or
+    - anywhere, with clear offer words (special, half price, 2 for 1, % off, happy hour…)."""
+    out, seen = [], set()
+    day, since_day = None, 99
+    for raw in text.splitlines():
+        ln = _clean_md(raw)
+        if not ln:
             continue
-        day = "Daily" if re.search(r"every ?day|daily|7 days", s["text"], re.I) else s["day"]
-        out.append({"day": day, "text": s["text"], "price": s.get("price")})
-    seen = {s["text"].lower() for s in out}
-    for ln in lines:
-        if not (8 <= len(ln) <= 140) or ln.lower() in seen:
+        m = _DAY_HEAD.match(ln)
+        if m:
+            day, since_day = m.group(1).capitalize(), 0
+            ln = m.group(2).strip(" :-–")
+            if not ln:
+                continue
+        else:
+            since_day += 1
+        if since_day > 3:
+            day = None
+        if not (8 <= len(ln) <= 160) or _words(ln) < (2 if day else 3) or _JUNK.search(ln):
             continue
-        if SPECIAL_LINE.search(ln) and not NOT_A_DEAL.search(ln) and (re.search(r"R\s?\d", ln) or re.search(
-                r"half|%|free|2\s*for\s*1|two for one|buy one", ln, re.I)):
-            day = next((d for d in ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-                        if re.search(rf"\b{d}s?\b", ln, re.I)), None)
-            if re.search(r"every ?day|daily|7 days", ln, re.I):
-                day = "Daily"
-            m = re.search(r"R\s?(\d{2,4})(?![\d.]*\s*off)", ln)
-            out.append({"day": day, "text": ln, "price": float(m.group(1)) if m else None})
-            seen.add(ln.lower())
-    return out[:15]
+        if NOT_A_DEAL.search(ln) or EXTRA_NOT_DEAL.search(ln):
+            continue
+        offer = SPECIAL_LINE.search(ln)
+        price = _PRICE.search(ln)
+        inline = next((x for x in _DAY_NAMES if re.search(rf"\b{x}s?\b", ln, re.I)), None)
+        if not (offer or ((day or inline) and price)):
+            continue
+        if not offer and not re.search(r"\band\b|\bwith\b|\+|&|\bor\b|\bany\b|\ball\b|\bfree\b|\bincl", ln, re.I):
+            continue  # a dish name and a price is a menu line, not a special
+        d = inline or day
+        if re.search(r"every ?day|daily|7 days", ln, re.I):
+            d = "Daily"
+        key = re.sub(r"\W+", " ", ln.lower()).strip()
+        if key in seen:
+            continue
+        seen.add(key)
+        val = float(price.group(1)) if price else None
+        out.append({"day": d, "text": ln[:140], "price": val if val and 10 <= val <= 3000 else None})
+    return out[:8]
 
 
 def read_page_specials(page: Page, http: Http) -> list[dict]:
@@ -249,7 +315,7 @@ def run(data_dir: Path, max_sites: int, today: str) -> dict:
     candidates = osm_businesses(http) + kit_businesses(HERE / "businesses")
     for b in candidates:
         site = b.get("website") or ""
-        if not site or SKIP_DOMAINS.search(site) or not in_area(b):
+        if not site or SKIP_DOMAINS.search(site) or CHAIN_DOMAINS.search(site) or not in_area(b):
             continue
         k = site_key(site)
         if not k:
@@ -258,6 +324,15 @@ def run(data_dir: Path, max_sites: int, today: str) -> dict:
         for f in ("name", "website", "category", "kind", "suburb", "address", "lat", "lng", "found_via"):
             if b.get(f) not in (None, "") and (rec.get(f) in (None, "") or f in ("lat", "lng") and b["found_via"] == "Google Maps"):
                 rec[f] = b[f]
+    for k in [k for k, r in known.items() if not in_area(r) or CHAIN_DOMAINS.search(r.get("website", ""))]:
+        del known[k]  # outside the northern suburbs (area rules may have changed)
+    northern = set(SUBURB_CENTRES)
+    for r in known.values():
+        if r.get("lat") is not None and r.get("suburb") not in northern:
+            r["suburb"] = nearest_suburb(r["lat"], r["lng"]) or r.get("suburb")
+    if os.environ.get("RECHECK_ALL") == "1":
+        for r in known.values():
+            r["checked"] = None
     log.info("%d candidate businesses (%d known with websites)", len(candidates), len(known))
 
     cutoff = (date.fromisoformat(today) - timedelta(days=RECHECK_DAYS)).isoformat()

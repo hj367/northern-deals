@@ -116,6 +116,6 @@ def parse_weekly_specials(lines: list[str]) -> tuple[list[dict], Optional[str]]:
             out[-1]["note"] = (out[-1].get("note", "") + " " + line).strip()
             continue
         if day and _DEAL_RE.search(line):
-            price = re.search(r"R\s?(\d{2,4})(?![\d.]*\s*off)", line, re.I)
+            price = re.search(r"(?<![A-Za-z])R\s?(\d{2,4})(?:[.,]\d{2})?(?![\d]|\s*[Oo][Ff][Ff])", line)
             out.append({"day": day, "text": line, "price": float(price.group(1)) if price else None})
     return out, (" | ".join(footer) or None)

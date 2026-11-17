@@ -78,3 +78,29 @@ def test_discovery_run_end_to_end(tmp_path):
          mock.patch.object(discover, "fetch_pages", return_value={}) as fp:
         out2 = discover.run(tmp_path, 50, "2026-11-19")
     assert out2["counts"]["checked_this_run"] == 0
+
+
+def test_rules_ignore_menus_shops_and_footers():
+    junk = """Sunday
+Open 9am till late
+Book now
+## Mains
+Our kitchen
+Hake & chips R155
+R185
+SUP Rental 30 Minutes R150.00 Add to cart
+Words, design and technical implementation of the website by Confidence Marketing.
+![02 - Half Lamb 8kg ](https://x.co.za/specials/half-lamb.jpg)
+10. 'Free gift' promotions and special offers are only available while stocks last
+Serving Observatory for over 18 years
+Choose between a Full rack of Ribs with Fries or 350g Rump Steak with Fries for R210.00 on Tuesdays
+"""
+    got = discover.rule_specials(junk)
+    assert [(s["day"], s["price"]) for s in got] == [("Tuesday", 210.0)], got
+
+
+def test_area_and_suburb():
+    assert discover.in_area({"lat": -33.832, "lng": 18.648})           # Durbanville
+    assert not discover.in_area({"lat": -33.938, "lng": 18.470})       # Observatory
+    assert not discover.in_area({"lat": -33.927, "lng": 18.458})       # Salt River
+    assert discover.nearest_suburb(-33.872, 18.695) == "Brackenfell"
