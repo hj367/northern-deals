@@ -69,7 +69,7 @@ void main() {
     });
     final dist = dealDistance(d.grocery.single, d.branches, const Here(-33.851, 18.694));
     expect(dist!.$2, 'Pick n Pay Cape Gate');
-    expect(dist!.$1, lessThan(0.5));
+    expect(dist.$1, lessThan(0.5));
     expect(kmLabel(0.42), '420 m');
   });
 }
