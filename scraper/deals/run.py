@@ -146,15 +146,19 @@ def main(argv: list[str] | None = None) -> int:
         if p.local:
             if p.store not in shop_ll:
                 c = shop_cfg.get(p.store, {})
-                shop_ll[p.store] = geo.locate(c.get("address"), c.get("suburb"), p.store)
+                shop_ll[p.store] = ([c["lat"], c["lng"]] if "lat" in c
+                                    else geo.locate(c.get("address"), c.get("suburb"), p.store))
             if shop_ll[p.store]:
                 p.lat, p.lng = shop_ll[p.store]
+    site_cfg = {c["name"]: c for c in cfg.get("restaurant_sites", [])}
     for s in specials:
-        ll = geo.locate(s.address, s.suburb, s.restaurant)
+        c = site_cfg.get(s.restaurant or "", {})
+        ll = [c["lat"], c["lng"]] if "lat" in c else geo.locate(s.address, s.suburb, s.restaurant)
         if ll:
             s.lat, s.lng = ll
     branches = geo.chain_branches()
-    log.info("geocoded with %d new lookups; branches: %s", geo.lookups, {k: len(v) for k, v in branches.items()})
+    log.info("geocoded with %d new lookups; branches: %s %s", geo.lookups,
+             {k: len(v) for k, v in branches.items()}, geo.branch_error)
 
     health = [r.health() for r in results]
     out = build_output(products, specials, hist, health, today, branches)

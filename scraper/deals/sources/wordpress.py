@@ -122,7 +122,8 @@ def special_from_post(p: dict, source: str, suburbs: list[str], tagged_northern:
     soup = BeautifulSoup(content_html, "html.parser")
     text = soup.get_text("\n", strip=True)
     # The headline itself has to be a special: a price, % off, 2-for-1, "special", happy hour...
-    if NOT_A_SPECIAL.search(title) or not SPECIAL_WORDS.search(title):
+    if (NOT_A_SPECIAL.search(title) or not SPECIAL_WORDS.search(title)
+            or re.match(r"\s*(win|competition|giveaway)\b", title, re.I)):
         return None
 
     # Where is it? Trust the address block, a suburb tag, or "in <suburb>" in the title —

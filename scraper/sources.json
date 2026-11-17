@@ -129,7 +129,9 @@
       "url": "https://cornerdeck.co.za",
       "suburb": "Brackenfell",
       "address": "Cape Gate Lifestyle Centre, Okavango Road, Brackenfell",
-      "poster_search": "special"
+      "poster_search": "special",
+      "lat": -33.8505,
+      "lng": 18.69363
     }
   ]
 }

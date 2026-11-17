@@ -17,6 +17,11 @@ log = logging.getLogger(__name__)
 UA = "NorthernDeals/1.0 (+https://github.com/hj367/northern-deals)"
 # Cape Town northern suburbs, generously: Milnerton/Century City to Kraaifontein/Kuils River
 BBOX = (-33.98, 18.45, -33.74, 18.80)   # south, west, north, east
+OVERPASS_ENDPOINTS = [
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.private.coffee/api/interpreter",
+    "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+]
 CHAIN_PATTERNS = {"Pick n Pay": "pick n pay", "Woolworths": "woolworths", "Clicks": "clicks"}
 
 
@@ -28,6 +33,7 @@ class Geo:
         self.http = Http(min_delay=1.1, max_delay=1.5)
         self.http.s.headers["User-Agent"] = UA
         self.lookups = 0
+        self.branch_error = ""
 
     def point(self, query: str) -> Optional[list[float]]:
         key = query.strip().lower()
@@ -80,11 +86,18 @@ class Geo:
 (nwr["brand"~"pick n pay|woolworths|clicks",i]({s},{w},{n},{e});
  nwr["name"~"^(pick n pay|woolworths|clicks)",i]["shop"]({s},{w},{n},{e}););
 out center tags;"""
-        try:
-            data = self.http.post("https://overpass-api.de/api/interpreter", data={"data": q},
-                                  timeout=120, retries=1).json()
-        except Exception as ex:
-            log.warning("Overpass failed: %s", ex)
+        data, errors = None, []
+        for endpoint in OVERPASS_ENDPOINTS:
+            try:
+                r = self.http.post(endpoint, data={"data": q}, timeout=150, retries=0,
+                                   headers={"Accept": "application/json"})
+                data = r.json()
+                break
+            except Exception as ex:
+                errors.append(f"{endpoint.split('/')[2]}: {type(ex).__name__} {str(ex)[:80]}")
+        if data is None:
+            self.branch_error = "; ".join(errors)
+            log.warning("geocoded branches failed: %s", self.branch_error)
             return cached["stores"] if cached else {}
         stores: dict[str, list] = {k: [] for k in CHAIN_PATTERNS}
         for el in data.get("elements", []):

@@ -268,3 +268,9 @@ def test_own_site_special_is_verified():
                           published="2025-08-27", modified="2025-08-27", own_site=True, poster="x.jpg")
     v = verify_special(s, {}, 1, "2026-10-30")
     assert v["verdict"] == "verified" and "own website today" in v["reasons"][0]["text"]
+
+
+def test_competition_post_skipped():
+    p = _post("WIN: Wednesday Dinner Special at The Tangram for R395",
+              "<p>Directions to The Tangram<br>Durbanville Hills<br>Durbanville</p>", "2026-11-10")
+    assert special_from_post(p, "FoodBlogCT", SUBURBS, tagged_northern=True) is None
