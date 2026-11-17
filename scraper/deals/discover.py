@@ -197,7 +197,12 @@ _DAY_HEAD = re.compile(r"^(" + "|".join(_DAY_NAMES) + r")s?\b[\s:–-]*(.*)$", r
 _PRICE = re.compile(r"(?<![A-Za-z\d])R\s?(\d{2,4})(?:[.,]\d{2})?(?!\d|\s*[Oo][Ff][Ff])")
 _JUNK = re.compile(r"add to (?:cart|basket)|website by|designed by|copyright|©|all rights|@\w|https?://|www\.|"
                    r"\bsku\b|out of stock|read more|view (?:menu|more)|sign up|log ?in|^\d+\.\s", re.I)
-EXTRA_NOT_DEAL = re.compile(r"only availab|subject to|rental|hire\b|per person deposit|tickets?\b|"
+# Offer wording that is a deal on its own; the bare word "special(s)" also needs a price.
+STRONG_OFFER = re.compile(r"half[- ]price|\d{1,2}\s*%\s*off|\b2\s*for\s*1\b|two for one|buy one|buy \d+ get|"
+                          r"happy hour|kids eat free|\bonly R\s?\d|\bnow R\s?\d|\bR\s?\d{2,4}\s*off\b|"
+                          r"get (?:the )?(?:cheapest|second|2nd)[^.]{0,20}(?:free|half)|"
+                          r"free (?:dessert|drink|beer|glass|side|coffee|kids)", re.I)
+EXTRA_NOT_DEAL = re.compile(r"special occasion|special offers and|stay up to date|only availab|subject to|rental|hire\b|per person deposit|tickets?\b|"
                             r"\bcourse\b|class\b|workshop|function|wedding|year[- ]end", re.I)
 
 
@@ -236,8 +241,8 @@ def rule_specials(text: str) -> list[dict]:
             continue
         if NOT_A_DEAL.search(ln) or EXTRA_NOT_DEAL.search(ln):
             continue
-        offer = SPECIAL_LINE.search(ln)
         price = _PRICE.search(ln)
+        offer = STRONG_OFFER.search(ln) or (SPECIAL_LINE.search(ln) and price)
         inline = next((x for x in _DAY_NAMES if re.search(rf"\b{x}s?\b", ln, re.I)), None)
         if not (offer or ((day or inline) and price)):
             continue

@@ -104,3 +104,14 @@ def test_area_and_suburb():
     assert not discover.in_area({"lat": -33.938, "lng": 18.470})       # Observatory
     assert not discover.in_area({"lat": -33.927, "lng": 18.458})       # Salt River
     assert discover.nearest_suburb(-33.872, 18.695) == "Brackenfell"
+
+
+def test_marketing_text_is_not_a_special():
+    txt = """Stay up to date with news, special offers and events happening at Nitida.
+All of these specials are available daily
+Our Daily Specials
+Make your special occasions unforgettable with Events by Papaz
+Daily special: lamb curry and rice R120
+Buy 2 pizzas and get the cheapest one free"""
+    got = [s["text"] for s in discover.rule_specials(txt)]
+    assert got == ["Daily special: lamb curry and rice R120", "Buy 2 pizzas and get the cheapest one free"], got
