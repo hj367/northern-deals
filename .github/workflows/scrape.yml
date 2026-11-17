@@ -3,6 +3,9 @@ name: Scrape deals
 on:
   schedule:
     - cron: "17 4 * * *"     # 06:17 SAST daily (04:17 UTC)
+  workflow_run:                # rebuild the app feed as soon as a discovery run finishes
+    workflows: ["Discover local businesses"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       only:
