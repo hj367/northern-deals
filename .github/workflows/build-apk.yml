@@ -53,11 +53,29 @@ jobs:
 
       # A release asset downloads as a plain .apk (artifacts are always zipped).
       # Permanent link: https://github.com/<owner>/<repo>/releases/latest/download/NorthernDeals.apk
+      # Sign every build with the same permanent key, so updates install over the old app.
+      # The key is stored encrypted (signing/northern-deals.jks.enc); the secret unlocks it.
+      - name: Sign APK with the permanent key
+        env:
+          SIGNING_PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}
+        run: |
+          if [ -z "$SIGNING_PASSWORD" ]; then
+            echo "::warning title=APK not permanently signed::Add the ANDROID_SIGNING_PASSWORD secret so updates install over the old app."
+            cp build/app/outputs/flutter-apk/app-release.apk NorthernDeals.apk
+            exit 0
+          fi
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -in signing/northern-deals.jks.enc -out "$RUNNER_TEMP/key.jks" -pass env:SIGNING_PASSWORD
+          APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          "$APKSIGNER" sign --ks "$RUNNER_TEMP/key.jks" --ks-key-alias northerndeals \
+            --ks-pass env:SIGNING_PASSWORD --key-pass env:SIGNING_PASSWORD \
+            --out NorthernDeals.apk build/app/outputs/flutter-apk/app-release.apk
+          "$APKSIGNER" verify --print-certs NorthernDeals.apk | grep -i "SHA-256 digest"
+          rm -f "$RUNNER_TEMP/key.jks"
+
       - name: Publish APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cp build/app/outputs/flutter-apk/app-release.apk NorthernDeals.apk
           notes="Latest build from ${GITHUB_SHA::7} on $(date -u +'%Y-%m-%d %H:%M') UTC. Download NorthernDeals.apk below and open it on your phone."
           if gh release view app-latest >/dev/null 2>&1; then
             gh release upload app-latest NorthernDeals.apk --clobber
