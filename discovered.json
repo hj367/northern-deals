@@ -1,11 +1,1715 @@
 {
-"generated_at": "2026-11-17T12:50:25+00:00",
+"generated_at": "2026-11-17T13:06:50+00:00",
 "reader": "rules",
 "counts": {
-"businesses": 0,
-"checked_this_run": 0,
-"with_specials": 0,
-"online_shops": 0
+"businesses": 104,
+"checked_this_run": 104,
+"with_specials": 14,
+"online_shops": 2
 },
-"businesses": {}
+"businesses": {
+"greensrestaurants.co.za": {
+"checked": "2026-11-17",
+"name": "Greens",
+"website": "https://greensrestaurants.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.86498,
+"lng": 18.57254,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.greensrestaurants.co.za/menu/"
+]
+},
+"vidaecaffe.com": {
+"checked": "2026-11-17",
+"name": "Vida e Cafe",
+"website": "https://vidaecaffe.com/",
+"category": "cafe",
+"kind": "restaurant",
+"address": "2 Fir Street",
+"lat": -33.93543,
+"lng": 18.47144,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://vidaecaffe.com/our-menu/"
+]
+},
+"thewildfig.co.za": {
+"checked": "2026-11-17",
+"name": "The Wild Fig",
+"website": "https://www.thewildfig.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.94253,
+"lng": 18.48007,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"wangthai.co.za": {
+"checked": "2026-11-17",
+"name": "Wang Thai",
+"website": "https://www.wangthai.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.89116,
+"lng": 18.4844,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"onshuisie.co.za": {
+"checked": "2026-11-17",
+"name": "Ons Huisie",
+"website": "https://onshuisie.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "18 General Janssens Street",
+"lat": -33.79952,
+"lng": 18.45899,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"nitida.co.za": {
+"checked": "2026-11-17",
+"name": "Cassia",
+"website": "https://nitida.co.za/cassia-restaurant",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.83531,
+"lng": 18.59176,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://nitida.co.za/cassia-restaurant-menus/"
+]
+},
+"coppercollection.co.za": {
+"checked": "2026-11-17",
+"name": "Patina",
+"website": "https://coppercollection.co.za/patina/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.8409,
+"lng": 18.60902,
+"found_via": "OpenStreetMap",
+"suburb": "Durbanville",
+"address": "Queen Street",
+"specials": [
+{
+"day": "Sunday",
+"text": "R200.00",
+"price": 200.0,
+"page": "https://coppercollection.co.za/patina/"
+},
+{
+"day": "Sunday",
+"text": "SUP Rental  ## SUP Rental 30 Minutes R150.00 Add to cart",
+"price": 150.0,
+"page": "https://coppercollection.co.za/patina/"
+},
+{
+"day": "Sunday",
+"text": "R150.00",
+"price": 150.0,
+"page": "https://coppercollection.co.za/patina/"
+},
+{
+"day": "Sunday",
+"text": "SUP Rental  ## SUP Rental 60 Minutes R200.00 Add to cart",
+"price": 200.0,
+"page": "https://coppercollection.co.za/patina/"
+}
+],
+"specials_pages": []
+},
+"bloemendalestate.co.za": {
+"checked": "2026-11-17",
+"name": "Bon Amis",
+"website": "https://bloemendalestate.co.za/bon-amis",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.82915,
+"lng": 18.5986,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"meerendal.co.za": {
+"checked": "2026-11-17",
+"name": "LaRomantica",
+"website": "https://meerendal.co.za/laromantica",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.79903,
+"lng": 18.62445,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"onsgenot.com": {
+"checked": "2026-11-17",
+"name": "Ons Genot",
+"website": "www.onsgenot.com",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.87859,
+"lng": 18.79401,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 511 in crawl (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_crawle",
+"specials": []
+},
+"mcdonalds.co.za": {
+"checked": "2026-11-17",
+"name": "McDonald's Kuils River Drive-Thru",
+"website": "https://www.mcdonalds.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "Carinus Street",
+"lat": -33.92586,
+"lng": 18.67969,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.mcdonalds.co.za/index.php?p=welcome-offer-terms-conditions"
+]
+},
+"catch22restaurant.co.za": {
+"checked": "2026-11-17",
+"name": "Catch 22",
+"website": "https://www.catch22restaurant.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Table View",
+"address": "Porterfield Road",
+"lat": -33.8212,
+"lng": 18.47715,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.catch22restaurant.co.za/#menu"
+]
+},
+"gypsycafe.co.za": {
+"checked": "2026-11-17",
+"name": "Gypsy Café",
+"website": "http://www.gypsycafe.co.za",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.93775,
+"lng": 18.47086,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"thetestkitchen.co.za": {
+"checked": "2026-11-17",
+"name": "The Test Kitchen",
+"website": "https://www.thetestkitchen.co.za/home/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "375 Albert Road",
+"lat": -33.92756,
+"lng": 18.45711,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"stickybbq.com": {
+"checked": "2026-11-17",
+"name": "Sticky Fingers BBQ",
+"website": "https://www.stickybbq.com/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.93823,
+"lng": 18.46845,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"http://stickybbq.com/specials/"
+]
+},
+"jerrysburgerbar.co.za": {
+"checked": "2026-11-17",
+"name": "Jerry's",
+"website": "http://www.jerrysburgerbar.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "123",
+"lat": -33.9389,
+"lng": 18.46887,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": "Monday",
+"text": "Enjoy any burger with fries on a Monday for R99.00 (this promo is valid all day & excludes Sliders)",
+"price": 99.0,
+"page": "http://www.jerrysburgerbar.co.za/menu"
+},
+{
+"day": "Tuesday",
+"text": "Choose between a Full rack of Ribs with Fries or 350g Rump Steak with Fries for R210.00",
+"price": 350.0,
+"page": "http://www.jerrysburgerbar.co.za/menu"
+},
+{
+"day": "Wednesday",
+"text": "BUY 2 Pizzas and get the cheapest one free",
+"price": null,
+"page": "http://www.jerrysburgerbar.co.za/menu"
+}
+],
+"specials_pages": [
+"http://www.jerrysburgerbar.co.za/menu"
+]
+},
+"obzcafe.co.za": {
+"checked": "2026-11-17",
+"name": "Obz Cafe",
+"website": "http://www.obzcafe.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "115",
+"lat": -33.939,
+"lng": 18.4689,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"linkorestaurant.co.za": {
+"checked": "2026-11-17",
+"name": "Linko",
+"website": "https://linkorestaurant.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "88 Lower Main Road",
+"lat": -33.93862,
+"lng": 18.46902,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"devilspeakbrewing.co.za": {
+"checked": "2026-11-17",
+"name": "Devil's Peak Brewing Company Taproom",
+"website": "https://www.devilspeakbrewing.co.za/",
+"category": "pub",
+"kind": "restaurant",
+"lat": -33.93383,
+"lng": 18.46039,
+"found_via": "OpenStreetMap",
+"suburb": "Epping",
+"address": "Devil's Peak Way",
+"error": "Blocked by anti-bot protection: Structural: minimal_text, no_content_elements (102 bytes, 0 chars visible)",
+"specials": []
+},
+"thecreamery.co.za": {
+"checked": "2026-11-17",
+"name": "The Creamery Café Newlands",
+"website": "https://thecreamery.co.za/",
+"category": "cafe",
+"kind": "restaurant",
+"suburb": "Newlands",
+"address": "Shop 4 Dean Street, Newlands",
+"lat": -33.97106,
+"lng": 18.46374,
+"found_via": "OpenStreetMap",
+"error": "Blocked by anti-bot protection: Structural: minimal_text, no_content_elements (1828 bytes, 0 chars visible)",
+"specials": []
+},
+"fatcactus.co.za": {
+"checked": "2026-11-17",
+"name": "The Fat Cactus",
+"website": "https://fatcactus.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "160",
+"lat": -33.92703,
+"lng": 18.45013,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"sushibox.co.za": {
+"checked": "2026-11-17",
+"name": "The Sushi Box",
+"website": "https://sushibox.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "Kildare Road",
+"lat": -33.97568,
+"lng": 18.45929,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://sushibox.co.za/menu"
+]
+},
+"kneadbakery.co.za": {
+"checked": "2026-11-17",
+"name": "Knead Bakery",
+"website": "https://www.kneadbakery.co.za/",
+"category": "bakery",
+"kind": "shop",
+"lat": -33.87579,
+"lng": 18.57594,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [],
+"shop_platform": null
+},
+"absolutepets.com": {
+"checked": "2026-11-17",
+"name": "Absolute Pets",
+"website": "https://absolutepets.com/",
+"category": "pet",
+"kind": "shop",
+"lat": -33.83951,
+"lng": 18.69535,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": null,
+"text": "10. **'Free gift' or 'Gift with purchase'** promotions and special offers are only available while stocks last.",
+"price": null,
+"page": "https://absolutepets.com/legal/promotion-special-offer-terms-and-conditions"
+}
+],
+"specials_pages": [
+"https://absolutepets.com/legal/promotion-special-offer-terms-and-conditions"
+],
+"shop_platform": null
+},
+"polkadraaifarm.co.za": {
+"checked": "2026-11-17",
+"name": "Polkadraai Strawberry Farm",
+"website": "https://polkadraaifarm.co.za/",
+"category": "farm",
+"kind": "shop",
+"lat": -33.96225,
+"lng": 18.74342,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.polkadraaifarm.co.za/activities/food-court/"
+],
+"shop_platform": null
+},
+"oways.co.za": {
+"checked": "2026-11-17",
+"name": "O'ways Teacafé",
+"website": "https://www.oways.co.za/",
+"category": "cafe",
+"kind": "restaurant",
+"address": "20 Dreyer Street",
+"lat": -33.97851,
+"lng": 18.46408,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"boerandbutcher.co.za": {
+"checked": "2026-11-17",
+"name": "The Boer & Butcher",
+"website": "https://www.boerandbutcher.co.za/",
+"category": "butcher",
+"kind": "shop",
+"suburb": "Bellville",
+"address": "93 12th Avenue",
+"lat": -33.89373,
+"lng": 18.61436,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.boerandbutcher.co.za/our-meat/"
+],
+"shop_platform": null
+},
+"ferdinandospizza.com": {
+"checked": "2026-11-17",
+"name": "Ferdinando's Pizza",
+"website": "https://www.ferdinandospizza.com/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "205 Lower Main Road",
+"lat": -33.93599,
+"lng": 18.46781,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://ferdinandospizza.com/in-house-specials/"
+]
+},
+"thepotluckclub.co.za": {
+"checked": "2026-11-17",
+"name": "The Pot Luck Club",
+"website": "https://thepotluckclub.co.za",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "373-375 Albert Road",
+"lat": -33.92731,
+"lng": 18.45738,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": "Sunday",
+"text": "R155",
+"price": 155.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R185",
+"price": 185.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R320",
+"price": 320.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R160",
+"price": 160.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R375",
+"price": 375.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R260",
+"price": 260.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R275",
+"price": 275.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R280",
+"price": 280.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R250",
+"price": 250.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R345",
+"price": 345.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R295",
+"price": 295.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R165",
+"price": 165.0,
+"page": "https://thepotluckclub.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R240",
+"price": 240.0,
+"page": "https://thepotluckclub.co.za/menu/"
+}
+],
+"specials_pages": [
+"https://thepotluckclub.co.za/menu/"
+]
+},
+"woodstockgrill.co.za": {
+"checked": "2026-11-17",
+"name": "Woodstock Grill & Tab",
+"website": "https://woodstockgrill.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.92755,
+"lng": 18.45381,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"narona.co.za": {
+"checked": "2026-11-17",
+"name": "Narona Pizza",
+"website": "https://www.narona.co.za/observatory.html",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Observatory",
+"address": "39 Trill Road, Observatory",
+"lat": -33.93919,
+"lng": 18.46886,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"famousbean.co.za": {
+"checked": "2026-11-17",
+"name": "Famous Bean Cafe",
+"website": "https://www.famousbean.co.za/",
+"category": "cafe",
+"kind": "restaurant",
+"suburb": "Pinelands",
+"address": "Howard Drive",
+"lat": -33.93352,
+"lng": 18.51075,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"amicipizzeria.co.za": {
+"checked": "2026-11-17",
+"name": "Amici - The Sandown",
+"website": "https://amicipizzeria.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Cape Town",
+"address": "2 College Avenue",
+"lat": -33.79967,
+"lng": 18.50547,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"nprooibos.com": {
+"checked": "2026-11-17",
+"name": "Northern Plateau Rooibos",
+"website": "https://www.nprooibos.com/",
+"category": "tea",
+"kind": "shop",
+"suburb": "Cape Town",
+"address": "378 Albert Road",
+"lat": -33.92835,
+"lng": 18.4591,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [],
+"shop_platform": null
+},
+"millandpress.co.za": {
+"checked": "2026-11-17",
+"name": "The Mill & Press Cafe and Deli",
+"website": "https://millandpress.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Cape Town",
+"address": "2 Fir Street",
+"lat": -33.93588,
+"lng": 18.47164,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.millandpress.co.za/copy-of-corporate-catering"
+]
+},
+"two4one.co.za": {
+"checked": "2026-11-17",
+"name": "Two4One",
+"website": "https://www.two4one.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "90 Lower Main Road",
+"lat": -33.93852,
+"lng": 18.46899,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": null,
+"text": "Buy One, Get One Free on All Food",
+"price": null,
+"page": "https://two4one.co.za/"
+},
+{
+"day": null,
+"text": "Chef's Special Bacon, salami, red onion & jalapeñosR190",
+"price": 190.0,
+"page": "https://two4one.co.za/menu/"
+}
+],
+"specials_pages": [
+"https://two4one.co.za/menu/"
+]
+},
+"tasca-mozambique.business.site": {
+"checked": "2026-11-17",
+"name": "Tasca Mozambique",
+"website": "https://tasca-mozambique.business.site/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.92999,
+"lng": 18.45203,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"michaelskitchenandbar.co.za": {
+"checked": "2026-11-17",
+"name": "Michael's Kitchen & Bar",
+"website": "https://www.michaelskitchenandbar.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Rondebosch",
+"address": "88 Camp Ground Road",
+"lat": -33.96554,
+"lng": 18.47533,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": "Friday",
+"text": "R240",
+"price": 240.0,
+"page": "https://www.michaelskitchenandbar.co.za/wp-content/uploads/Friday-Night.jpg",
+"poster": "https://www.michaelskitchenandbar.co.za/wp-content/uploads/Friday-Night.jpg"
+}
+],
+"specials_pages": []
+},
+"oumeul.co.za": {
+"checked": "2026-11-17",
+"name": "Ou Meul Bakery and Cafe Pinelands",
+"website": "https://oumeul.co.za/ou-meul-stores/ou-meul-pinelands/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Pinelands",
+"address": "Central Square",
+"lat": -33.93965,
+"lng": 18.49853,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"salisburys.co.za": {
+"checked": "2026-11-17",
+"name": "Salisburys",
+"website": "https://www.salisburys.co.za/",
+"category": "cafe",
+"kind": "restaurant",
+"lat": -33.93336,
+"lng": 18.45204,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"fish4africa.co.za": {
+"checked": "2026-11-17",
+"name": "Fish4Africa",
+"website": "https://www.fish4africa.co.za/stores/woodstock/",
+"category": "seafood",
+"kind": "shop",
+"suburb": "Woodstock",
+"address": "230 Victoria Road",
+"lat": -33.93055,
+"lng": 18.45282,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://fish4.africa/frozen-seafood/"
+],
+"shop_platform": null
+},
+"thekindkitchen.co.za": {
+"checked": "2026-11-17",
+"name": "The Kind Kitchen",
+"website": "https://thekindkitchen.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.92754,
+"lng": 18.45357,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"capeofstormsdistillery.com": {
+"checked": "2026-11-17",
+"name": "Cape of Storms Distilling Company",
+"website": "https://www.capeofstormsdistillery.com/",
+"category": "beverages",
+"kind": "shop",
+"address": "100 Voortrekker Road",
+"lat": -33.92643,
+"lng": 18.47009,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [],
+"shop_platform": "woocommerce"
+},
+"alchemyroasters.co.za": {
+"checked": "2026-11-17",
+"name": "Alchemy Coffee Roasters",
+"website": "https://www.alchemyroasters.co.za/",
+"category": "cafe",
+"kind": "restaurant",
+"address": "23 Bakker Street",
+"lat": -33.87412,
+"lng": 18.61943,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"janesjustsomoreish.webflow.io": {
+"checked": "2026-11-17",
+"name": "Jane's",
+"website": "https://janesjustsomoreish.webflow.io/menu",
+"category": "pastry",
+"kind": "shop",
+"address": "Briar Road",
+"lat": -33.93193,
+"lng": 18.45819,
+"found_via": "OpenStreetMap",
+"error": "Blocked by anti-bot protection: Structural: minimal_text, no_content_elements, script_heavy_shell (2369 bytes, 0 chars visible)",
+"specials": []
+},
+"one-juice.com": {
+"checked": "2026-11-17",
+"name": "One-Juice",
+"website": "https://one-juice.com/",
+"category": "beverages",
+"kind": "shop",
+"address": "Yew Street",
+"lat": -33.93183,
+"lng": 18.45819,
+"found_via": "OpenStreetMap",
+"error": "Blocked by anti-bot protection: HTTP 403 with HTML content (119 bytes)",
+"specials": []
+},
+"tableseven.co.za": {
+"checked": "2026-11-17",
+"name": "Table Seven",
+"website": "https://www.tableseven.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "Yew Street",
+"lat": -33.93163,
+"lng": 18.45853,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"nolz-kitchen.business.site": {
+"checked": "2026-11-17",
+"name": "Nolz",
+"website": "https://nolz-kitchen.business.site/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Salt River",
+"address": "Briar Road, Salt River",
+"lat": -33.93213,
+"lng": 18.45856,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"delipiesbakery.co.za": {
+"checked": "2026-11-17",
+"name": "Deli Pies",
+"website": "https://delipiesbakery.co.za/",
+"category": "pastry",
+"kind": "shop",
+"address": "191B Victoria Road",
+"lat": -33.93053,
+"lng": 18.45365,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"plushi.co.za": {
+"checked": "2026-11-17",
+"name": "Plushi",
+"website": "https://www.plushi.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.93434,
+"lng": 18.45793,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"bootlegger.coffee": {
+"checked": "2026-11-17",
+"name": "Bootlegger Coffee Company",
+"website": "https://www.bootlegger.coffee/",
+"category": "cafe",
+"kind": "restaurant",
+"lat": -33.93461,
+"lng": 18.4576,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"elgreeyo.co.za": {
+"checked": "2026-11-17",
+"name": "El Greeyo Roastery",
+"website": "https://www.elgreeyo.co.za/",
+"category": "cafe",
+"kind": "restaurant",
+"suburb": "Salt River",
+"address": "18 Brickfield Road, Salt River",
+"lat": -33.93482,
+"lng": 18.45706,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"coldpressed.capetown": {
+"checked": "2026-11-17",
+"name": "Coldpressed",
+"website": "http://coldpressed.capetown/",
+"category": "deli",
+"kind": "shop",
+"lat": -33.9312,
+"lng": 18.46554,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"cultivatecollective.co.za": {
+"checked": "2026-11-17",
+"name": "Cultivate",
+"website": "https://cultivatecollective.co.za/",
+"category": "wine",
+"kind": "shop",
+"address": "Yew Street",
+"lat": -33.93175,
+"lng": 18.45857,
+"found_via": "OpenStreetMap",
+"error": "Blocked by anti-bot protection: HTTP 503 with HTML content (45860 bytes)",
+"specials": []
+},
+"groundculture.co.za": {
+"checked": "2026-11-17",
+"name": "Ground Culture Cafe and Deli",
+"website": "https://groundculture.co.za/obz-cafe-retail-store/",
+"category": "cafe",
+"kind": "restaurant",
+"lat": -33.93295,
+"lng": 18.46681,
+"found_via": "OpenStreetMap",
+"error": "Blocked by anti-bot protection: Structural: minimal_text, no_content_elements, script_heavy_shell (2146 bytes, 0 chars visible)",
+"specials": []
+},
+"naanbetter.co.za": {
+"checked": "2026-11-17",
+"name": "Naan Better",
+"website": "https://naanbetter.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.93308,
+"lng": 18.4668,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"panchos.online": {
+"checked": "2026-11-17",
+"name": "Poncho's",
+"website": "https://panchos.online/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "127",
+"lat": -33.9388,
+"lng": 18.46884,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"tapitapi.co.za": {
+"checked": "2026-11-17",
+"name": "Tapi Tapi",
+"website": "https://www.tapitapi.co.za/",
+"category": "ice cream",
+"kind": "restaurant",
+"lat": -33.9389,
+"lng": 18.46914,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.tapitapi.co.za/cafemenu"
+]
+},
+"nyslicepizza.com": {
+"checked": "2026-11-17",
+"name": "NY Slice",
+"website": "https://nyslicepizza.com/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "78 Lower Main Road",
+"lat": -33.93879,
+"lng": 18.46907,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": null,
+"text": "1 pie: R50 off your next order",
+"price": null,
+"page": "https://nyslicepizza.com/"
+}
+],
+"specials_pages": [
+"https://nyslicepizza.com/whats-on"
+]
+},
+"stones.co.za": {
+"checked": "2026-11-17",
+"name": "Stones",
+"website": "https://www.stones.co.za/observatory-m7kdg",
+"category": "bar",
+"kind": "restaurant",
+"lat": -33.93855,
+"lng": 18.46907,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"groundzero.cafe": {
+"checked": "2026-11-17",
+"name": "Ground Zero",
+"website": "https://groundzero.cafe/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "122b Lower Main Road",
+"lat": -33.93685,
+"lng": 18.46837,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"veganstreetfood.co.za": {
+"checked": "2026-11-17",
+"name": "Vegan Streetfood",
+"website": "https://veganstreetfood.co.za/?v=68caa8201064",
+"category": "fast food",
+"kind": "restaurant",
+"address": "79",
+"lat": -33.93972,
+"lng": 18.46903,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://veganstreetfood.co.za/wholesale"
+]
+},
+"sonderobz.com": {
+"checked": "2026-11-17",
+"name": "Sonder Cafe",
+"website": "https://www.sonderobz.com/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "79",
+"lat": -33.93959,
+"lng": 18.46903,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"reverie.capetown": {
+"checked": "2026-11-17",
+"name": "Reverie Social Table",
+"website": "https://www.reverie.capetown/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "226A",
+"lat": -33.93133,
+"lng": 18.46583,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"beantreecafeobz.co.za": {
+"checked": "2026-11-17",
+"name": "Bean Tree Cafe",
+"website": "https://beantreecafeobz.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.93728,
+"lng": 18.46274,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": "Sunday",
+"text": "Words, design and technical implementation of the website by Confidence Marketing. Website hosting by Afrihost. Stock images from deathtostockphoto.com and freepik.com.  Font: Advertising Script Family by Zetafonts -http://www.zetafonts.com/collection/557). Thanks everyone.",
+"price": null,
+"page": "https://beantreecafeobz.co.za/"
+}
+],
+"specials_pages": [
+"https://beantreecafeobz.co.za/Menu"
+]
+},
+"spier.co.za": {
+"checked": "2026-11-17",
+"name": "Spier Food Garden",
+"website": "https://www.spier.co.za/visit/food-garden/",
+"category": "farm",
+"kind": "shop",
+"lat": -33.96985,
+"lng": 18.78839,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.spier.co.za/food/"
+],
+"shop_platform": null
+},
+"cakeprincess.co.za": {
+"checked": "2026-11-17",
+"name": "Cake Princess",
+"website": "https://cakeprincess.co.za",
+"category": "fast food",
+"kind": "restaurant",
+"suburb": "Brackenfell",
+"address": "Cynaroides Avenue",
+"lat": -33.85215,
+"lng": 18.69332,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://cakeprincess.co.za/product-category/cake/speciality-cakes/",
+"https://cakeprincess.co.za/product-category/cupcakes/speciality-cupcakes/",
+"https://cakeprincess.co.za/product-category/on-sale/"
+]
+},
+"portalia.co.za": {
+"checked": "2026-11-17",
+"name": "Portalia Pizzeria & Deli",
+"website": "https://www.portalia.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Cape Town",
+"address": "Cnr Raats Drive & Parklands Walk",
+"lat": -33.81892,
+"lng": 18.50317,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"gardenerscottage.co.za": {
+"checked": "2026-11-17",
+"name": "The Gardener's Cottage",
+"website": "https://www.gardenerscottage.co.za",
+"category": "cafe",
+"kind": "restaurant",
+"lat": -33.9701,
+"lng": 18.45706,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.gardenerscottage.co.za/pages/menu"
+]
+},
+"southernsun.com": {
+"checked": "2026-11-17",
+"name": "Newlands Café",
+"website": "https://www.southernsun.com/southern-sun-newlands/restaurants-bars/newlands-cafe?utm_source=openstreetmaps&utm_medium=businesslisting&utm_campaign=rstrnt_the-newlands-cafe",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Newlands",
+"address": "7 Main Road",
+"lat": -33.97548,
+"lng": 18.46533,
+"found_via": "OpenStreetMap",
+"error": "Blocked by anti-bot protection: Cloudflare JS challenge",
+"specials": []
+},
+"kleinroosboom.co.za": {
+"checked": "2026-11-17",
+"name": "Jéan Restaurant",
+"website": "https://kleinroosboom.co.za/jean-restaurant-and-deli/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Durbanville, Cape Town",
+"address": "Tygerberg Valley Road",
+"lat": -33.81838,
+"lng": 18.57484,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"brackenfellnursery.co.za": {
+"checked": "2026-11-17",
+"name": "Brackenfell Nursery",
+"website": "https://brackenfellnursery.co.za/",
+"category": "garden centre",
+"kind": "shop",
+"suburb": "Brackenfell",
+"address": "Shawn Street, Brackenfell",
+"lat": -33.86647,
+"lng": 18.69147,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://brackenfellnursery.co.za/product-category/accessories/furniture-features/"
+],
+"shop_platform": "woocommerce"
+},
+"koffieman.co.za": {
+"checked": "2026-11-17",
+"name": "Koffieman",
+"website": "https://koffieman.co.za/",
+"category": "cafe",
+"kind": "restaurant",
+"suburb": "Durbanville",
+"address": "10 Church Street",
+"lat": -33.83252,
+"lng": 18.65025,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"alpinedeli.co.za": {
+"checked": "2026-11-17",
+"name": "Alpine Deli & Eatery Durbanville",
+"website": "https://www.alpinedeli.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Durbanville",
+"address": "2A Chenoweth",
+"lat": -33.8306,
+"lng": 18.651,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.alpinedeli.co.za/#a-variety-of-cuisines-on-offer"
+]
+},
+"joostenberg.co.za": {
+"checked": "2026-11-17",
+"name": "Joostenberg Bistro",
+"website": "https://joostenberg.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.82634,
+"lng": 18.79569,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"panarottis.com": {
+"checked": "2026-11-17",
+"name": "Panarottis",
+"website": "https://www.panarottis.com/za/restaurants/all/panarottis-cape-gate/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.85195,
+"lng": 18.69743,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": "Sunday",
+"text": "bazzer1911",
+"price": 1911.0,
+"page": "https://www.panarottis.com/za/restaurants/all/panarottis-cape-gate/"
+},
+{
+"day": "Sunday",
+"text": "Dreamer68709995156",
+"price": 6870.0,
+"page": "https://www.panarottis.com/za/restaurants/all/panarottis-cape-gate/"
+}
+],
+"specials_pages": [
+"https://www.panarottis.com/za/menu/express#specials"
+]
+},
+"cafeducap.com": {
+"checked": "2026-11-17",
+"name": "Café du Cap",
+"website": "https://www.cafeducap.com/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Newlands",
+"address": "64 Main Street",
+"lat": -33.97632,
+"lng": 18.45885,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"http://www.cafeducap.com/cafe/"
+]
+},
+"kristenskickass.co.za": {
+"checked": "2026-11-17",
+"name": "Kristen's Kick-Ass Ice Cream",
+"website": "https://www.kristenskickass.co.za/",
+"category": "ice cream",
+"kind": "restaurant",
+"suburb": "Newlands",
+"address": "60 Main Street",
+"lat": -33.97595,
+"lng": 18.45918,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"pafos.co.za": {
+"checked": "2026-11-17",
+"name": "Pafos",
+"website": "https://www.pafos.co.za",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "165 Koeberg Road",
+"lat": -33.90932,
+"lng": 18.48469,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.pafos.co.za/food.asp"
+]
+},
+"dairyexchange.co.za": {
+"checked": "2026-11-17",
+"name": "Dairy Exchange",
+"website": "https://www.dairyexchange.co.za/",
+"category": "dairy",
+"kind": "shop",
+"lat": -33.88069,
+"lng": 18.68413,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [],
+"shop_platform": null
+},
+"rumiworld.co.za": {
+"checked": "2026-11-17",
+"name": "Rumi Cafe",
+"website": "http://www.rumiworld.co.za",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.93972,
+"lng": 18.49861,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"cattlebaron.co.za": {
+"checked": "2026-11-17",
+"name": "Cattle Baron Durbanville",
+"website": "https://www.cattlebaron.co.za/cattle-baron-durbanville",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Durbanville",
+"address": "6 Marais Crescent, Durbanville",
+"lat": -33.82997,
+"lng": 18.65156,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"oldtownmotorcycles.co.za": {
+"checked": "2026-11-17",
+"name": "Old Town Motorcycles",
+"website": "https://oldtownmotorcycles.co.za",
+"category": "cafe",
+"kind": "restaurant",
+"suburb": "Durbanville",
+"address": "5 Pampoenkraal Lane, Durbanville",
+"lat": -33.83276,
+"lng": 18.6481,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.yaupholstery.co.za/search/ikhekhe-feat-shoes-meister-dooushii-optimist"
+]
+},
+"chocolatbistro.co.za": {
+"checked": "2026-11-17",
+"name": "Chocolat Bistro",
+"website": "https://chocolatbistro.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.82892,
+"lng": 18.64549,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"oatlandscafe.co.za": {
+"checked": "2026-11-17",
+"name": "Oatlands Café",
+"website": "https://oatlandscafe.co.za/",
+"category": "cafe",
+"kind": "restaurant",
+"lat": -33.79331,
+"lng": 18.60305,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://oatlandscafe.co.za/our-menu/"
+]
+},
+"woolworths.co.za": {
+"checked": "2026-11-17",
+"name": "Woolworths Cafe Village Square",
+"website": "https://woolworths.co.za",
+"category": "cafe",
+"kind": "restaurant",
+"suburb": "Durbanville",
+"address": "Oxford Street",
+"lat": -33.82943,
+"lng": 18.6484,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"forries.co.za": {
+"checked": "2026-11-17",
+"name": "Forester's Arms",
+"website": "https://forries.co.za/",
+"category": "pub",
+"kind": "restaurant",
+"suburb": "Cape Town",
+"address": "52 Newlands Avenue",
+"lat": -33.97144,
+"lng": 18.45372,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": "Friday",
+"text": "Grab a mate and head to Forries — @southbeerza Irish Red Ale or Pale Ale, 2 draughts for just R100 🙌 Every pour is your shot at winning a 4L keg to take home. Draw on the 29th.",
+"price": 100.0,
+"page": "https://forries.co.za/"
+},
+{
+"day": "Friday",
+"text": "📍 Forries Finisher 2026",
+"price": 2026.0,
+"page": "https://forries.co.za/"
+}
+],
+"specials_pages": []
+},
+"woodstockbrewery.co.za": {
+"checked": "2026-11-17",
+"name": "Woodstock Brewery Taproom",
+"website": "https://woodstockbrewery.co.za/taproom-obz",
+"category": "bar",
+"kind": "restaurant",
+"suburb": "Observatory",
+"address": "105 Lower Main Road, Observatory",
+"lat": -33.93932,
+"lng": 18.46895,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"goodhopeonthego.co.za": {
+"checked": "2026-11-17",
+"name": "Good Hope Meat Hyper",
+"website": "http://goodhopeonthego.co.za/",
+"category": "butcher",
+"kind": "shop",
+"suburb": "Salt River",
+"address": "443 Albert Road, Salt River",
+"lat": -33.92788,
+"lng": 18.45958,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": null,
+"text": " ![02 - Half Lamb 8kg ](https://goodhopeonthego.co.za/lamb-halal-good-hope-meat-hyper-specials/half-lamb-halal-good-hope-meat-hyper)",
+"price": null,
+"page": "https://goodhopeonthego.co.za/lamb-halal-good-hope-meat-hyper-specials?page=2"
+},
+{
+"day": null,
+"text": " ![07 - Knuckle Pieces 500g ](https://goodhopeonthego.co.za/lamb-halal-good-hope-meat-hyper-specials/Lamb-Knuckle-Pieces%20)",
+"price": null,
+"page": "https://goodhopeonthego.co.za/lamb-halal-good-hope-meat-hyper-specials?page=2"
+},
+{
+"day": null,
+"text": " ![02 - Half Lamb 8kg ](https://goodhopeonthego.co.za/specials/half-lamb-halal-good-hope-meat-hyper)",
+"price": null,
+"page": "https://goodhopeonthego.co.za/specials?page=2"
+}
+],
+"specials_pages": [
+"https://goodhopeonthego.co.za/lamb-halal-good-hope-meat-hyper-specials",
+"https://goodhopeonthego.co.za/specials"
+],
+"shop_platform": null
+},
+"districtcafe.co.za": {
+"checked": "2026-11-17",
+"name": "District Cafe",
+"website": "http://www.districtcafe.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Woodstock",
+"address": "117 Roodebloem Road, Woodstock",
+"lat": -33.93536,
+"lng": 18.45167,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"atouchofmadness.co.za": {
+"checked": "2026-11-17",
+"name": "Touch of Madness",
+"website": "https://atouchofmadness.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Observatory",
+"address": "12 Nuttall Road, Observatory",
+"lat": -33.93877,
+"lng": 18.46944,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"comradecoffee.co.za": {
+"checked": "2026-11-17",
+"name": "Comrade Coffee",
+"website": "https://comradecoffee.co.za",
+"category": "cafe",
+"kind": "restaurant",
+"suburb": "Observatory",
+"address": "42 Trill Road, Observatory",
+"lat": -33.93915,
+"lng": 18.46951,
+"found_via": "OpenStreetMap",
+"error": "Blocked by anti-bot protection: Structural: minimal_text on small page (273 bytes, 36 chars visible)",
+"specials": []
+},
+"ourarmchair.co.za": {
+"checked": "2026-11-17",
+"name": "Independent Armchair Theatre",
+"website": "https://ourarmchair.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Observatory",
+"address": "135 Lower Main Road, Observatory",
+"lat": -33.93856,
+"lng": 18.46872,
+"found_via": "OpenStreetMap",
+"error": "Unexpected error in _crawl_web at line 779 in _crawl_web (../../../../../../opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/crawl4ai/async_c",
+"specials": []
+},
+"cocoa.co.za": {
+"checked": "2026-11-17",
+"name": "Cocoa Cha Chi",
+"website": "http://cocoa.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Observatory",
+"address": "20 Lower Main Road, Observatory",
+"lat": -33.94197,
+"lng": 18.46896,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": "Monday",
+"text": "R75** · all day · all pastas · eat in only",
+"price": 75.0,
+"page": "http://cocoa.co.za/specials/"
+},
+{
+"day": "Monday",
+"text": "Mid-month special: scrambled eggs on toasted sourdough, R45, served all day",
+"price": 45.0,
+"page": "http://cocoa.co.za/specials/"
+},
+{
+"day": "Monday",
+"text": "Scrambled eggs on toast · **R45** · served all day",
+"price": 45.0,
+"page": "http://cocoa.co.za/specials/"
+}
+],
+"specials_pages": [
+"http://cocoa.co.za/specials",
+"http://cocoa.co.za/#specials"
+]
+},
+"mangoginger.co.za": {
+"checked": "2026-11-17",
+"name": "Mango Ginger",
+"website": "http://mangoginger.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Observatory",
+"address": "27 Lower Main Road, Observatory",
+"lat": -33.94158,
+"lng": 18.46872,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": "Sunday",
+"text": "We believe in delicious food and good health combined, using only top-end ingredients like stone-ground flour, full-fat dairy, and free-range meats. Our menu celebrates diversity with gluten-free, sugar-free, vegan, and vegetarian options for our ever-growing clientele.",
+"price": null,
+"page": "https://www.mangoginger.co.za/"
+},
+{
+"day": "Sunday",
+"text": "Serving Observatory for over 18 years",
+"price": 18.0,
+"page": "https://www.mangoginger.co.za/"
+}
+],
+"specials_pages": [
+"https://www.mangoginger.co.za/our-menu"
+]
+},
+"cafeganesh.co.za": {
+"checked": "2026-11-17",
+"name": "Ganesh Restaurant",
+"website": "https://cafeganesh.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Observatory",
+"address": "38 Trill Road, Observatory",
+"lat": -33.93923,
+"lng": 18.46931,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"pizzashed.co.za": {
+"checked": "2026-11-17",
+"name": "Pizza Shed",
+"website": "https://pizzashed.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Observatory",
+"address": "242 Lower Main Road, Observatory",
+"lat": -33.93094,
+"lng": 18.46568,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"gangstarcafe.com": {
+"checked": "2026-11-17",
+"name": "Gangstar Cafe",
+"website": "https://gangstarcafe.com/",
+"category": "cafe",
+"kind": "restaurant",
+"suburb": "Mowbray",
+"address": "65 Main Road, Mowbray",
+"lat": -33.94789,
+"lng": 18.47068,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"backareagardens.co.za": {
+"checked": "2026-11-17",
+"name": "Back Area Garden Deli",
+"website": "https://backareagardens.co.za/",
+"category": "greengrocer",
+"kind": "shop",
+"suburb": "Pinelands",
+"address": "U1 Alexandra Road, Pinelands",
+"lat": -33.94156,
+"lng": 18.48921,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [],
+"shop_platform": null
+},
+"paarldeville.co.za": {
+"checked": "2026-11-17",
+"name": "Paarl de Ville",
+"website": "https://paarldeville.co.za",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.76669,
+"lng": 18.7886,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": []
+},
+"thefarmeatery.co.za": {
+"checked": "2026-11-17",
+"name": "The Farm Eatery",
+"website": "https://thefarmeatery.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.80075,
+"lng": 18.64016,
+"found_via": "OpenStreetMap",
+"specials": [
+{
+"day": "Sunday",
+"text": "_08 November 2026_",
+"price": 2026.0,
+"page": "http://thefarmeatery.co.za/menu/"
+},
+{
+"day": "Sunday",
+"text": "R575pp",
+"price": 575.0,
+"page": "http://thefarmeatery.co.za/menu/"
+}
+],
+"specials_pages": [
+"http://thefarmeatery.co.za/menu/"
+]
+},
+"papazbistro.co.za": {
+"checked": "2026-11-17",
+"name": "Papaz Bistro",
+"website": "https://www.papazbistro.co.za",
+"category": "restaurant",
+"kind": "restaurant",
+"lat": -33.88687,
+"lng": 18.67682,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.papazbistro.co.za/our-menu/"
+]
+},
+"peppajacks.co.za": {
+"checked": "2026-11-17",
+"name": "Peppa Jack's Tex-Mex Grill & Bar",
+"website": "https://www.peppajacks.co.za/",
+"category": "restaurant",
+"kind": "restaurant",
+"address": "19 Thaba Park Hooggelegen Road",
+"lat": -33.81483,
+"lng": 18.62093,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.peppajacks.co.za/index.html#anchor-u1438"
+]
+},
+"olivebistro.co.za": {
+"checked": "2026-11-17",
+"name": "The Olive Bistro",
+"website": "https://www.olivebistro.co.za",
+"category": "restaurant",
+"kind": "restaurant",
+"suburb": "Durbanville",
+"address": "39 Main Road, Durbanville",
+"lat": -33.83165,
+"lng": 18.64549,
+"found_via": "OpenStreetMap",
+"specials": [],
+"specials_pages": [
+"https://www.olivebistro.co.za/menu/"
+]
+}
+}
 }
