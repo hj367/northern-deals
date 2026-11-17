@@ -1,10 +1,10 @@
 {
-"generated_at": "2026-11-17T13:23:14+00:00",
+"generated_at": "2026-11-17T13:28:48+00:00",
 "reader": "rules",
 "counts": {
-"businesses": 32,
-"checked_this_run": 32,
-"with_specials": 3,
+"businesses": 33,
+"checked_this_run": 33,
+"with_specials": 0,
 "online_shops": 1
 },
 "businesses": {
@@ -45,14 +45,7 @@
 "lat": -33.83531,
 "lng": 18.59176,
 "found_via": "OpenStreetMap",
-"specials": [
-{
-"day": null,
-"text": "Stay up to date with news, special offers and events happening at Nitida.",
-"price": null,
-"page": "https://nitida.co.za/cassia-restaurant/"
-}
-],
+"specials": [],
 "specials_pages": [
 "https://nitida.co.za/cassia-restaurant-menus/"
 ],
@@ -231,26 +224,7 @@
 "lat": -33.81892,
 "lng": 18.50317,
 "found_via": "OpenStreetMap",
-"specials": [
-{
-"day": "Daily",
-"text": "All of these specials are available daily",
-"price": null,
-"page": "https://www.portalia.co.za/"
-},
-{
-"day": "Daily",
-"text": "Our Daily Specials",
-"price": null,
-"page": "https://www.portalia.co.za/"
-},
-{
-"day": "Daily",
-"text": "Our daily specials are prepared by our great Chef's and can be found below. Please ask our staff if the following specials are available on ",
-"price": null,
-"page": "https://www.portalia.co.za/"
-}
-],
+"specials": [],
 "specials_pages": []
 },
 "kleinroosboom.co.za": {
@@ -466,20 +440,7 @@
 "lat": -33.88687,
 "lng": 18.67682,
 "found_via": "OpenStreetMap",
-"specials": [
-{
-"day": null,
-"text": "We’re infusing every event with our passion and meticulous attention to detail, as if it were our own. Elevating special moments to unforget",
-"price": null,
-"page": "https://www.papazbistro.co.za/"
-},
-{
-"day": null,
-"text": "Make your special occasions unforgettable with Events by Papaz, where exceptional cuisine meets impeccable service in a beautiful setting.",
-"price": null,
-"page": "https://www.papazbistro.co.za/"
-}
-],
+"specials": [],
 "specials_pages": [
 "https://www.papazbistro.co.za/our-menu/"
 ],
@@ -514,6 +475,19 @@
 "specials_pages": [
 "https://www.olivebistro.co.za/menu/"
 ]
+},
+"bootlegger.coffee": {
+"checked": "2026-11-17",
+"name": "Bootlegger Durbanville",
+"website": "https://bootlegger.coffee/",
+"category": "cafe",
+"kind": "restaurant",
+"lat": -33.83006,
+"lng": 18.64764,
+"found_via": "OpenStreetMap",
+"suburb": "Durbanville",
+"specials": [],
+"specials_pages": []
 }
 }
 }
