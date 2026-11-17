@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+import time
 from urllib.parse import urljoin
 from dataclasses import dataclass, field
 
@@ -47,35 +48,32 @@ def scrape_retail(cfg: dict, http: Http) -> SourceResult:
     store = cfg["store"]
     res = SourceResult(name=store, ok=False, method=cfg["strategy"])
     seen: set[str] = set()
-    try:
-        for page0 in range(cfg.get("pages", 5)):
-            url = _page_url(cfg, page0)
-            if cfg["strategy"] == "json":
-                if cfg.get("method", "GET").upper() == "POST":
-                    data = http.post(url, json=cfg.get("json_body", {}),
-                                     headers={"Accept": "application/json"}).json()
-                else:
-                    data = http.get_json(url, headers={"Accept": "application/json"})
-                found = products_from_json(data, store, cfg.get("base_url", ""))
-            elif cfg["strategy"] == "woolworths":
-                found = woolworths_products(http.get_text(url), store, cfg.get("base_url", ""))
-            else:
-                html = http.get_text(url)
-                found = products_from_html(html, store, cfg.get("base_url", ""))
-            res.pages += 1
-            new = [p for p in found if p.key not in seen]
-            for p in new:
-                seen.add(p.key)
-            res.items.extend(new)
-            log.info("%s page %d: %d products (%d new)", store, page0, len(found), len(new))
-            if not new:
+    for page0 in range(cfg.get("pages", 5)):
+        url = _page_url(cfg, page0)
+        found = None
+        for attempt in range(2):  # one retry per page after a pause (throttling)
+            try:
+                found = _fetch_page(cfg, url, store, http)
                 break
-        res.ok = len(res.items) > 0
-        if not res.ok:
-            res.error = "Page loaded but no products were recognised (site layout or URL may have changed)."
-    except Exception as e:
-        res.error = f"{type(e).__name__}: {e}"
-        log.warning("%s failed: %s", store, res.error)
+            except Exception as e:
+                res.error = f"page {page0 + 1}: {type(e).__name__}: {e}"
+                log.warning("%s %s (attempt %d)", store, res.error, attempt + 1)
+                time.sleep(20)
+        if found is None:
+            break  # keep the pages we already have
+        res.pages += 1
+        new = [p for p in found if p.key not in seen]
+        for p in new:
+            seen.add(p.key)
+        res.items.extend(new)
+        log.info("%s page %d: %d products (%d new)", store, page0, len(found), len(new))
+        if not new:
+            break
+    res.ok = len(res.items) > 0
+    if res.ok and res.error:
+        res.error = f"partial: stopped at {res.error}"
+    elif not res.ok and not res.error:
+        res.error = "Page loaded but no products were recognised (site layout or URL may have changed)."
 
     # Fallback: hosted scraper with SA residential IPs (optional, paid per item).
     if not res.ok and cfg.get("apify_actor") and os.environ.get("APIFY_TOKEN"):
@@ -88,6 +86,18 @@ def scrape_retail(cfg: dict, http: Http) -> SourceResult:
             res.error += f" | Apify fallback failed: {e}"
     res.items = [p for p in res.items if p.price and p.name]
     return res
+
+
+def _fetch_page(cfg: dict, url: str, store: str, http: Http) -> list[ProductObs]:
+    if cfg["strategy"] == "json":
+        if cfg.get("method", "GET").upper() == "POST":
+            data = http.post(url, json=cfg.get("json_body", {}), headers={"Accept": "application/json"}).json()
+        else:
+            data = http.get_json(url, headers={"Accept": "application/json"})
+        return products_from_json(data, store, cfg.get("base_url", ""))
+    if cfg["strategy"] == "woolworths":
+        return woolworths_products(http.get_text(url), store, cfg.get("base_url", ""))
+    return products_from_html(http.get_text(url), store, cfg.get("base_url", ""))
 
 
 _WW_STATE = re.compile(r"window\.__INITIAL_STATE__\s*=\s*({.*?})\s*;?\s*</script>", re.S)
