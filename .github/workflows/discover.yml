@@ -60,7 +60,7 @@ jobs:
         run: |
           set +e; python -m deals.discover --data ../data 2>&1 | tee /tmp/discover.log
           code=${PIPESTATUS[0]}
-          msg=$(grep -E "DISCOVERY|FOUND|candidate businesses|checking" /tmp/discover.log | head -60 | sed -e 's/%/%25/g' | sed -e ':a;N;$!ba;s/\n/%0A/g')
+          msg=$(grep -E "DISCOVERY|FOUND|candidate businesses|checking|OSM|WARNING|Error|error" /tmp/discover.log | head -60 | sed -e 's/%/%25/g' | sed -e ':a;N;$!ba;s/\n/%0A/g')
           echo "::notice title=Discovery summary::$msg"
           if [ $code -ne 0 ]; then echo "::error title=Discovery failed::$(tail -n 40 /tmp/discover.log | sed -e 's/%/%25/g' | sed -e ':a;N;$!ba;s/\n/%0A/g')"; fi
           exit $code

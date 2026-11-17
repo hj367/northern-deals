@@ -58,21 +58,21 @@ NOT_A_DEAL = re.compile(r"deliver|shipping|voucher|gift card|competition|terms|c
 def osm_businesses(http: Http) -> list[dict]:
     s, w, n, e = BBOX
     bb = f"({s},{w},{n},{e})"
-    q = f"""[out:json][timeout:150];
+    q = f"""[out:json][timeout:180];
 (
- nwr["amenity"~"^({FOOD_AMENITY})$"]["website"]{bb};
- nwr["amenity"~"^({FOOD_AMENITY})$"]["contact:website"]{bb};
- nwr["shop"~"^({FOOD_SHOP})$"]["website"]{bb};
- nwr["shop"~"^({FOOD_SHOP})$"]["contact:website"]{bb};
+ nwr["amenity"~"^({FOOD_AMENITY})$"][~"^(contact:)?website$"~"."]{bb};
+ nwr["shop"~"^({FOOD_SHOP})$"][~"^(contact:)?website$"~"."]{bb};
 );
 out center tags;"""
     data = None
     for ep in OVERPASS_ENDPOINTS:
         try:
-            data = http.post(ep, data={"data": q}, timeout=180, retries=0).json()
+            r = http.post(ep, data={"data": q}, timeout=240, retries=1)
+            data = r.json()
+            log.info("OSM: %d places with websites from %s", len(data.get("elements", [])), ep.split("/")[2])
             break
         except Exception as ex:
-            log.warning("Overpass %s failed: %s", ep, str(ex)[:120])
+            log.warning("OSM lookup via %s failed: %s", ep.split("/")[2], str(ex)[:160])
     if data is None:
         return []
     out = []
