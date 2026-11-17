@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: write          # publish the APK as a release
     defaults:
       run:
         working-directory: app
@@ -49,7 +51,17 @@ jobs:
           flutter build apk --release --dart-define=DEALS_URL=${{ vars.DEALS_URL || 'https://raw.githubusercontent.com/hj367/northern-deals/data/deals.json' }} 2>&1 | tee /tmp/build.log
           report ${PIPESTATUS[0]} /tmp/build.log "APK build" || exit 1
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: northern-deals-apk
-          path: app/build/app/outputs/flutter-apk/app-release.apk
+      # A release asset downloads as a plain .apk (artifacts are always zipped).
+      # Permanent link: https://github.com/<owner>/<repo>/releases/latest/download/NorthernDeals.apk
+      - name: Publish APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk NorthernDeals.apk
+          notes="Latest build from ${GITHUB_SHA::7} on $(date -u +'%Y-%m-%d %H:%M') UTC. Download NorthernDeals.apk below and open it on your phone."
+          if gh release view app-latest >/dev/null 2>&1; then
+            gh release upload app-latest NorthernDeals.apk --clobber
+            gh release edit app-latest --notes "$notes" --latest
+          else
+            gh release create app-latest NorthernDeals.apk --title "Northern Deals app" --notes "$notes" --latest
+          fi
